@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>arsipvitey — Portal Arsip Kenangan</title>
+    <title>arsipvitey Portal Arsip Kenangan</title>
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
     <script>
         tailwind.config = {
@@ -35,7 +40,6 @@
             color: #0f172a;
         }
 
-        /* Ambient Background Glows */
         .ambient-glow-1 {
             position: fixed;
             top: -10%;
@@ -87,7 +91,6 @@
             border-color: #cbd5e1;
         }
 
-        /* Styling Drag and Drop Dropzone */
         .dropzone-active {
             border-color: #6366f1 !important;
             background-color: #eef2ff !important;
@@ -214,7 +217,6 @@
                 </div>
 
                 <div id="bannerContainer" class="flex gap-5 overflow-x-auto no-scrollbar pb-3 snap-x">
-                    <!-- Banner Highlights di-render oleh Javascript -->
                 </div>
             </section>
 
@@ -237,7 +239,6 @@
                 </div>
 
                 <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Kartu Kategori di-render oleh Javascript -->
                 </div>
             </section>
         </main>
@@ -284,7 +285,6 @@
             </div>
 
             <div id="categoryAlbumsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic Cards -->
             </div>
         </main>
     </div>
@@ -352,7 +352,7 @@
         </div>
     </div>
 
-    <!-- ================= MODAL ADMIN PANEL (DRAG & DROP READY) ================= -->
+    <!-- ================= MODAL ADMIN PANEL ================= -->
     <div id="adminModal"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div
@@ -459,7 +459,6 @@
                         </div>
                     </div>
 
-                    <!-- AREA DRAG & DROP FOTO BANNER -->
                     <div>
                         <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Latar
                             Banner</label>
@@ -474,7 +473,6 @@
                                 <p class="text-[10px] text-slate-400">atau klik untuk memilih foto dari laptop/HP</p>
                             </div>
 
-                            <!-- Image Preview Area -->
                             <div id="bannerPreviewContainer" class="hidden relative mt-2">
                                 <img id="bannerPreviewImg"
                                     class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
@@ -485,16 +483,14 @@
                                 </button>
                             </div>
                         </div>
-                        <input type="hidden" id="bannerImageUrl" required>
                     </div>
 
-                    <button type="submit"
+                    <button type="submit" id="bannerSubmitBtn"
                         class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
                         Tambah Banner Sorotan
                     </button>
                 </form>
 
-                <!-- Daftar Sorotan Aktif -->
                 <div class="space-y-2 pt-2">
                     <h4 class="text-xs font-extrabold uppercase text-slate-500">Daftar Sorotan Aktif:</h4>
                     <div id="adminBannerList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
@@ -502,7 +498,7 @@
                 </div>
             </div>
 
-            <!-- TAB 3: TAMBAH & HAPUS KARTU PORTAL UTAMA (DRAG & DROP) -->
+            <!-- TAB 3: TAMBAH & HAPUS KARTU PORTAL UTAMA -->
             <div id="formUpdateCover" class="space-y-4 hidden">
                 <form onsubmit="addNewCategory(event)"
                     class="space-y-3 bg-rose-50/60 p-4 rounded-2xl border border-rose-200/80">
@@ -524,7 +520,6 @@
                         </div>
                     </div>
 
-                    <!-- AREA DRAG & DROP FOTO KARTU PORTAL -->
                     <div>
                         <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Sampul
                             Kartu</label>
@@ -539,7 +534,6 @@
                                 <p class="text-[10px] text-slate-400">atau klik untuk memilih foto dari laptop/HP</p>
                             </div>
 
-                            <!-- Image Preview Area -->
                             <div id="categoryPreviewContainer" class="hidden relative mt-2">
                                 <img id="categoryPreviewImg"
                                     class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
@@ -550,16 +544,14 @@
                                 </button>
                             </div>
                         </div>
-                        <input type="hidden" id="newCatCover" required>
                     </div>
 
-                    <button type="submit"
+                    <button type="submit" id="categorySubmitBtn"
                         class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
                         Tambah Kartu Kategori Portal
                     </button>
                 </form>
 
-                <!-- Daftar Kartu Kategori Aktif -->
                 <div class="space-y-2 pt-2">
                     <h4 class="text-xs font-extrabold uppercase text-slate-500">Daftar Kartu Kategori Aktif:</h4>
                     <div id="adminCategoryList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
@@ -572,25 +564,50 @@
 
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
-        // Data Default Folder Archives
+        // =========================================================================
+        // 🔥 FIREBASE CONFIGURATION (ARSIPVITEY OFFICIAL)
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLDAMwW-Lzj-8v93mxCdBuEWqfaN0z-8s",
+            authDomain: "arsipvitey.firebaseapp.com",
+            projectId: "arsipvitey",
+            storageBucket: "arsipvitey.firebasestorage.app",
+            messagingSenderId: "602957751310",
+            appId: "1:602957751310:web:361dd7e6490b82606b485f"
+        };
+
+        // Inisialisasi Firebase
+        let db = null;
+        let storage = null;
+        let isFirebaseActive = false;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            storage = firebase.storage();
+            isFirebaseActive = true;
+            console.log("🔥 Firebase Terhubung Secara Realtime!");
+        } catch (err) {
+            console.warn("Firebase fallback error:", err);
+        }
+
+        // Data Default Initial
         const defaultArchives = [
-            { id: 1, title: "Tom Sushi Grand Indonesia", category: "Makan Sushi", date: "2024-11-12", year: "2024", driveUrl: "https://drive.google.com" },
-            { id: 2, title: "Sushi Hiro Senopati", category: "Makan Sushi", date: "2025-02-14", year: "2025", driveUrl: "https://drive.google.com" },
-            { id: 3, title: "Fotobooth", category: "Fotobooth", date: "2024-11-03", year: "2024", driveUrl: "https://drive.google.com" },
-            { id: 4, title: "Self Photo Studio Blok M", category: "Fotobooth", date: "2025-01-20", year: "2025", driveUrl: "https://drive.google.com" },
-            { id: 5, title: "GBK Morning Jogging", category: "Jogging", date: "2024-12-20", year: "2024", driveUrl: "https://drive.google.com" },
-            { id: 6, title: "Curug Cibereum Bogor", category: "Curug", date: "2026-08-07", year: "2026", driveUrl: "https://drive.google.com/drive/folders/18vGZ2XeFisQeciUsYKxawA28VB1zGg1_" }
+            { id: "1", title: "Tom Sushi Grand Indonesia", category: "Makan Sushi", date: "2024-11-12", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "2", title: "Sushi Hiro Senopati", category: "Makan Sushi", date: "2025-02-14", year: "2025", driveUrl: "https://drive.google.com" },
+            { id: "3", title: "Fotobooth", category: "Fotobooth", date: "2024-11-03", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "4", title: "Self Photo Studio Blok M", category: "Fotobooth", date: "2025-01-20", year: "2025", driveUrl: "https://drive.google.com" },
+            { id: "5", title: "GBK Morning Jogging", category: "Jogging", date: "2024-12-20", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "6", title: "Curug Cibereum Bogor", category: "Curug", date: "2026-08-07", year: "2026", driveUrl: "https://drive.google.com/drive/folders/18vGZ2XeFisQeciUsYKxawA28VB1zGg1_" }
         ];
 
-        // Data Default Banners Highlights
         const defaultBanners = [
-            { id: 101, title: "Sushi Date Momen", category: "Makan Sushi", date: "12 November 2024", imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" },
-            { id: 102, title: "Photomatics Senayan City", category: "Fotobooth", date: "03 November 2024", imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
-            { id: 103, title: "GBK Morning Run", category: "Jogging", date: "20 Desember 2024", imageUrl: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" },
-            { id: 104, title: "curug cibereum", category: "Curug", date: "7 Agustus 2026", imageUrl: "curugtime.jpeg" }
+            { id: "101", title: "Sushi Date Momen", category: "Makan Sushi", date: "12 November 2024", imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" },
+            { id: "102", title: "Photomatics Senayan City", category: "Fotobooth", date: "03 November 2024", imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
+            { id: "103", title: "GBK Morning Run", category: "Jogging", date: "20 Desember 2024", imageUrl: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" },
+            { id: "104", title: "curug cibereum", category: "Curug", date: "7 Agustus 2026", imageUrl: "curugtime.jpeg" }
         ];
 
-        // Data Default Kartu Kategori Portal Utama
         const defaultCategories = [
             { id: 'cat-1', name: "Makan Sushi", tag: "Kuliner", icon: "fa-utensils", border: "border-rose-100 hover:border-rose-400", badgeBg: "bg-rose-500", coverUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" },
             { id: 'cat-2', name: "Fotobooth", tag: "Studio", icon: "fa-camera", border: "border-purple-100 hover:border-purple-400", badgeBg: "bg-purple-500", coverUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
@@ -604,13 +621,53 @@
 
         let currentUser = JSON.parse(localStorage.getItem("arsipvitey_session")) || null;
         let currentActiveCategory = "";
+        let selectedBannerFile = null;
+        let selectedCategoryFile = null;
 
         window.onload = function () {
             if (currentUser) {
                 showDashboard();
             }
             initDropzones();
+            listenRealtimeDatabase();
         };
+
+        // Realtime Synchronizer Firestore
+        function listenRealtimeDatabase() {
+            if (!isFirebaseActive) return;
+
+            db.collection("banners").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    banners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderBanners();
+                } else {
+                    defaultBanners.forEach(b => db.collection("banners").doc(b.id).set(b));
+                }
+            });
+
+            db.collection("categories").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                } else {
+                    defaultCategories.forEach(c => db.collection("categories").doc(c.id).set(c));
+                }
+            });
+
+            db.collection("archives").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    archives = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateCategoryCounts();
+                    if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                        renderCategoryAlbums();
+                    }
+                } else {
+                    defaultArchives.forEach(a => db.collection("archives").doc(String(a.id)).set(a));
+                }
+            });
+        }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -944,18 +1001,18 @@
                 return;
             }
 
+            if (type === 'banner') selectedBannerFile = file;
+            if (type === 'category') selectedCategoryFile = file;
+
             const reader = new FileReader();
             reader.onload = function (e) {
-                const imageUrl = e.target.result;
-
+                const previewUrl = e.target.result;
                 if (type === 'banner') {
-                    document.getElementById('bannerImageUrl').value = imageUrl;
-                    document.getElementById('bannerPreviewImg').src = imageUrl;
+                    document.getElementById('bannerPreviewImg').src = previewUrl;
                     document.getElementById('bannerDropzoneContent').classList.add('hidden');
                     document.getElementById('bannerPreviewContainer').classList.remove('hidden');
                 } else if (type === 'category') {
-                    document.getElementById('newCatCover').value = imageUrl;
-                    document.getElementById('categoryPreviewImg').src = imageUrl;
+                    document.getElementById('categoryPreviewImg').src = previewUrl;
                     document.getElementById('categoryDropzoneContent').classList.add('hidden');
                     document.getElementById('categoryPreviewContainer').classList.remove('hidden');
                 }
@@ -965,19 +1022,32 @@
 
         function removeImagePreview(type) {
             if (type === 'banner') {
-                document.getElementById('bannerImageUrl').value = '';
+                selectedBannerFile = null;
                 document.getElementById('bannerFileInput').value = '';
                 document.getElementById('bannerDropzoneContent').classList.remove('hidden');
                 document.getElementById('bannerPreviewContainer').classList.add('hidden');
             } else if (type === 'category') {
-                document.getElementById('newCatCover').value = '';
+                selectedCategoryFile = null;
                 document.getElementById('categoryFileInput').value = '';
                 document.getElementById('categoryDropzoneContent').classList.remove('hidden');
                 document.getElementById('categoryPreviewContainer').classList.add('hidden');
             }
         }
 
-        function addNewDriveLink(e) {
+        // Upload Helper
+        async function uploadFileToFirebase(file, path) {
+            try {
+                if (!isFirebaseActive || !storage) return null;
+                const ref = storage.ref(`${path}/${Date.now()}_${file.name}`);
+                const snapshot = await ref.put(file);
+                return await snapshot.ref.getDownloadURL();
+            } catch (e) {
+                console.warn("Storage upload failed, falling back to Base64:", e);
+                return null;
+            }
+        }
+
+        async function addNewDriveLink(e) {
             e.preventDefault();
             const title = document.getElementById("adminTitle").value;
             const category = document.getElementById("adminCategory").value;
@@ -985,44 +1055,68 @@
             const year = new Date(date).getFullYear().toString();
             const driveUrl = document.getElementById("adminDriveUrl").value;
 
-            const newItem = { id: Date.now(), title, category, date, year, driveUrl };
+            const newItem = { id: String(Date.now()), title, category, date, year, driveUrl };
 
-            archives.unshift(newItem);
-            localStorage.setItem("arsipvitey_data", JSON.stringify(archives));
-
-            updateCategoryCounts();
-            if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
-                renderCategoryAlbums();
+            if (isFirebaseActive) {
+                await db.collection("archives").doc(newItem.id).set(newItem);
+            } else {
+                archives.unshift(newItem);
+                localStorage.setItem("arsipvitey_data", JSON.stringify(archives));
+                updateCategoryCounts();
+                if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                    renderCategoryAlbums();
+                }
             }
 
             toggleAdminModal();
             alert("Link folder Google Drive baru berhasil disimpan!");
         }
 
-        function addNewBanner(e) {
+        async function addNewBanner(e) {
             e.preventDefault();
-            const title = document.getElementById("bannerTitle").value;
-            const category = document.getElementById("bannerCategory").value;
-            const dateRaw = document.getElementById("bannerDate").value;
-            const imageUrl = document.getElementById("bannerImageUrl").value;
+            const submitBtn = document.getElementById("bannerSubmitBtn");
+            const originalBtnText = submitBtn.innerText;
 
-            if (!imageUrl) {
+            if (!selectedBannerFile) {
                 alert("Mohon upload foto latar banner terlebih dahulu via Drag & Drop!");
                 return;
             }
 
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            const dateFormatted = new Date(dateRaw).toLocaleDateString('id-ID', options);
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Mengunggah Foto...";
 
-            const newBanner = { id: Date.now(), title, category, date: dateFormatted, imageUrl };
+                let imageUrl = await uploadFileToFirebase(selectedBannerFile, "banners");
+                if (!imageUrl) {
+                    imageUrl = document.getElementById('bannerPreviewImg').src;
+                }
 
-            banners.unshift(newBanner);
-            localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                const title = document.getElementById("bannerTitle").value;
+                const category = document.getElementById("bannerCategory").value;
+                const dateRaw = document.getElementById("bannerDate").value;
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const dateFormatted = new Date(dateRaw).toLocaleDateString('id-ID', options);
 
-            renderBanners();
-            document.getElementById("bannerTitle").value = "";
-            removeImagePreview('banner');
-            alert("Banner sorotan baru berhasil dipasang!");
+                const newBanner = { id: String(Date.now()), title, category, date: dateFormatted, imageUrl };
+
+                if (isFirebaseActive) {
+                    await db.collection("banners").doc(newBanner.id).set(newBanner);
+                } else {
+                    banners.unshift(newBanner);
+                    localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                    renderBanners();
+                }
+
+                document.getElementById("bannerTitle").value = "";
+                removeImagePreview('banner');
+                toggleAdminModal();
+                alert("Banner sorotan baru berhasil dipasang!");
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
         }
 
         function renderAdminBannerList() {
@@ -1041,7 +1135,7 @@
                             <span class="text-[10px] text-slate-500">${b.category} • ${b.date}</span>
                         </div>
                     </div>
-                    <button onclick="deleteBanner(${b.id})" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-2.5 py-1 rounded-lg font-semibold shrink-0 transition">
+                    <button onclick="deleteBanner('${b.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-2.5 py-1 rounded-lg font-semibold shrink-0 transition">
                         <i class="fa-solid fa-trash-can mr-1"></i> Hapus
                     </button>
                 `;
@@ -1049,46 +1143,71 @@
             });
         }
 
-        function deleteBanner(id) {
+        async function deleteBanner(id) {
             if (confirm("Apakah Anda yakin ingin menghapus sorotan momen ini?")) {
-                banners = banners.filter(b => b.id !== id);
-                localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
-                renderBanners();
+                if (isFirebaseActive) {
+                    await db.collection("banners").doc(String(id)).delete();
+                } else {
+                    banners = banners.filter(b => String(b.id) !== String(id));
+                    localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                    renderBanners();
+                }
             }
         }
 
-        function addNewCategory(e) {
+        async function addNewCategory(e) {
             e.preventDefault();
-            const name = document.getElementById("newCatName").value.trim();
-            const tag = document.getElementById("newCatTag").value.trim();
-            const coverUrl = document.getElementById("newCatCover").value.trim();
+            const submitBtn = document.getElementById("categorySubmitBtn");
+            const originalBtnText = submitBtn.innerText;
 
-            if (!coverUrl) {
+            if (!selectedCategoryFile) {
                 alert("Mohon upload foto sampul kartu terlebih dahulu via Drag & Drop!");
                 return;
             }
 
-            const newCat = {
-                id: 'cat-' + Date.now(),
-                name: name,
-                tag: tag,
-                icon: "fa-folder",
-                border: "border-indigo-100 hover:border-indigo-400",
-                badgeBg: "bg-indigo-600",
-                coverUrl: coverUrl
-            };
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Mengunggah Foto...";
 
-            categories.push(newCat);
-            localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                let coverUrl = await uploadFileToFirebase(selectedCategoryFile, "categories");
+                if (!coverUrl) {
+                    coverUrl = document.getElementById('categoryPreviewImg').src;
+                }
 
-            renderCategoryDropdowns();
-            renderCategoryCards();
-            updateCategoryCounts();
+                const name = document.getElementById("newCatName").value.trim();
+                const tag = document.getElementById("newCatTag").value.trim();
 
-            document.getElementById("newCatName").value = "";
-            document.getElementById("newCatTag").value = "";
-            removeImagePreview('category');
-            alert(`Kartu Kategori "${name}" berhasil ditambahkan ke Portal Utama!`);
+                const newCat = {
+                    id: 'cat-' + Date.now(),
+                    name: name,
+                    tag: tag,
+                    icon: "fa-folder",
+                    border: "border-indigo-100 hover:border-indigo-400",
+                    badgeBg: "bg-indigo-600",
+                    coverUrl: coverUrl
+                };
+
+                if (isFirebaseActive) {
+                    await db.collection("categories").doc(newCat.id).set(newCat);
+                } else {
+                    categories.push(newCat);
+                    localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                }
+
+                document.getElementById("newCatName").value = "";
+                document.getElementById("newCatTag").value = "";
+                removeImagePreview('category');
+                toggleAdminModal();
+                alert(`Kartu Kategori "${name}" berhasil ditambahkan ke Portal Utama!`);
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
         }
 
         function renderAdminCategoryList() {
@@ -1115,13 +1234,17 @@
             });
         }
 
-        function deleteCategory(id) {
+        async function deleteCategory(id) {
             if (confirm("Apakah Anda yakin ingin menghapus Kartu Kategori ini dari Portal Utama?")) {
-                categories = categories.filter(c => c.id !== id);
-                localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
-                renderCategoryDropdowns();
-                renderCategoryCards();
-                updateCategoryCounts();
+                if (isFirebaseActive) {
+                    await db.collection("categories").doc(String(id)).delete();
+                } else {
+                    categories = categories.filter(c => String(c.id) !== String(id));
+                    localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                }
             }
         }
     </script>
