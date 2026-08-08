@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>arsipvitey Portal Arsip Kenangan</title>
+
+    <!-- Tailwind CSS & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .ambient-glow-1 {
+            position: fixed;
+            top: -10%;
+            left: 10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -10%;
+            right: 5%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.07) 0%, rgba(255, 255, 255, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .light-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .light-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .light-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -4px rgba(99, 102, 241, 0.12);
+            border-color: #cbd5e1;
+        }
+
+        .dropzone-active {
+            border-color: #6366f1 !important;
+            background-color: #eef2ff !important;
+        }
+    </style>
+</head>
+
+<body class="relative min-h-screen antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Ambient Glow Effects -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- ================= PAGE 1: LOGIN ================= -->
+    <div id="loginPage" class="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md light-panel p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden bg-white/95">
+
+            <div
+                class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-indigo-500 to-emerald-500">
+            </div>
+
+            <div class="text-center mb-8">
+                <div
+                    class="inline-flex p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100 mb-3 shadow-sm">
+                    <i class="fa-solid fa-box-archive text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">arsipvitey</h1>
+                <p class="text-xs text-slate-500 mt-1 font-semibold tracking-wider uppercase">Portal Foto & Memori
+                    Digital</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">User
+                        ID</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="userId" required placeholder="Masukkan ID"
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 text-sm text-slate-800 placeholder:text-slate-400 transition duration-200">
+                    </div>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                        <input type="password" id="userPw" required placeholder="••••••••"
+                            class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 text-sm text-slate-800 placeholder:text-slate-400 transition duration-200">
+                    </div>
+                </div>
+
+                <p id="loginError"
+                    class="text-xs text-rose-600 hidden flex items-center gap-1.5 bg-rose-50 p-3 rounded-xl border border-rose-200 font-medium">
+                    <i class="fa-solid fa-circle-exclamation text-rose-500"></i> ID atau Password salah! Silakan coba
+                    lagi.
+                </p>
+
+                <button type="submit"
+                    class="w-full py-3.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-semibold rounded-xl transition duration-200 shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2">
+                    <span>Masuk ke Portal</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- NAVBAR GLOBAL -->
+    <nav id="globalNavbar"
+        class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 md:px-8 py-3.5 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="showDashboard()">
+                <div
+                    class="p-2.5 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition duration-200">
+                    <i class="fa-solid fa-box-archive text-base"></i>
+                </div>
+                <div>
+                    <span
+                        class="font-extrabold text-lg tracking-tight text-slate-900 block leading-none">arsipvitey</span>
+                    <span class="text-[10px] text-indigo-600 font-bold tracking-wider">PHOTO ARCHIVE</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-slate-100 border border-slate-200/80 px-3.5 py-1.5 rounded-full">
+                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-xs font-semibold text-slate-700">
+                        Halo, <strong id="currentUserDisplay" class="text-indigo-600"></strong> 👋
+                    </span>
+                </div>
+
+                <button id="adminTabBtn" onclick="toggleAdminModal()"
+                    class="hidden text-xs bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-3.5 py-1.5 rounded-full hover:bg-indigo-100 transition font-semibold flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-indigo-600"></i> <span class="hidden sm:inline">Admin
+                        Panel</span>
+                </button>
+
+                <button onclick="handleLogout()"
+                    class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
+                    title="Keluar">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= PAGE 2: DASHBOARD ================= -->
+    <div id="dashboardPage" class="hidden relative z-10 min-h-screen pb-20">
+        <main class="max-w-7xl mx-auto px-4 md:px-8 pt-8 space-y-10">
+
+            <!-- Banner Scroll Aktivitas -->
+            <section>
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <span
+                            class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt"></i> Highlight Aktivitas
+                        </span>
+                        <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Sorotan Momen Foto</h2>
+                    </div>
+                    <span class="text-xs text-slate-400 font-semibold hidden sm:flex items-center gap-1">
+                        Geser untuk selengkapnya <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </span>
+                </div>
+
+                <div id="bannerContainer" class="flex gap-5 overflow-x-auto no-scrollbar pb-3 snap-x">
+                </div>
+            </section>
+
+            <!-- Kategori Utama Grid -->
+            <section>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <div>
+                        <span
+                            class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                            <i class="fa-solid fa-layer-group"></i> Portal Utama
+                        </span>
+                        <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Kategori Album Foto</h2>
+                    </div>
+
+                    <button onclick="openUploadModal()"
+                        class="self-start sm:self-auto text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>Minta Ajukan Folder Baru</span>
+                    </button>
+                </div>
+
+                <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ================= PAGE 3: CATEGORY DETAIL ================= -->
+    <div id="categoryDetailPage" class="hidden relative z-10 min-h-screen pb-20">
+        <main class="max-w-7xl mx-auto px-4 md:px-8 pt-8 space-y-8">
+
+            <div class="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <button onclick="showDashboard()"
+                            class="p-3 bg-slate-100 hover:bg-indigo-50 border border-slate-200 rounded-2xl text-slate-700 transition group shadow-sm">
+                            <i
+                                class="fa-solid fa-arrow-left text-sm group-hover:-translate-x-1 transition duration-200"></i>
+                        </button>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600">Arsip Foto
+                                Terkategori</span>
+                            <h1 id="selectedCategoryTitle"
+                                class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-0.5">Category Name</h1>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative min-w-[220px]">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                            <input type="text" id="detailSearchInput" oninput="renderCategoryAlbums()"
+                                placeholder="Cari tempat / lokasi..."
+                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white text-xs text-slate-800 placeholder:text-slate-400">
+                        </div>
+
+                        <select id="detailYearFilter" onchange="renderCategoryAlbums()"
+                            class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 font-semibold focus:outline-none">
+                            <option value="ALL">Semua Tahun</option>
+                            <option value="2024">Tahun 2024</option>
+                            <option value="2025">Tahun 2025</option>
+                            <option value="2026">Tahun 2026</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="categoryAlbumsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= MODAL REQUEST UPLOAD ================= -->
+    <div id="uploadModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 space-y-6 relative border border-slate-200 shadow-2xl">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl border border-emerald-100">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900">Izin Pembuatan Folder</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Pengajuan izin ke Developer (Theo)</p>
+                    </div>
+                </div>
+                <button onclick="closeUploadModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="submitUploadRequest(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Nama Tempat / Aktivitas
+                        Foto</label>
+                    <input type="text" id="reqTitle" required placeholder="Contoh: Tom Sushi Grand Indonesia"
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Kategori</label>
+                        <select id="reqCategory"
+                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none dynamic-category-options">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Tanggal Foto</label>
+                        <input type="date" id="reqDate" required
+                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Catatan Tambahan</label>
+                    <textarea id="reqNote" rows="2" placeholder="Catatan singkat mengenai foto..."
+                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:bg-white"></textarea>
+                </div>
+
+                <div
+                    class="bg-emerald-50 border border-emerald-200/80 p-3.5 rounded-2xl text-xs text-emerald-800 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5"></i>
+                    <span>Pesan otomatis siap kirim akan dibuka langsung di WhatsApp Theo.</span>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Kirim Permintaan Izin</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL ADMIN PANEL ================= -->
+    <div id="adminModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-xl p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100">
+                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900">Admin Control Panel</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Khusus Akun Theo</p>
+                    </div>
+                </div>
+                <button onclick="toggleAdminModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Tab Switcher Admin -->
+            <div class="flex bg-slate-100 p-1 rounded-2xl text-xs font-semibold gap-1">
+                <button id="adminTabDriveBtn" onclick="switchAdminTab('drive')"
+                    class="flex-1 py-2 rounded-xl text-indigo-600 bg-white shadow-sm transition">
+                    <i class="fa-solid fa-folder mr-1"></i> Album Drive
+                </button>
+                <button id="adminTabBannerBtn" onclick="switchAdminTab('banner')"
+                    class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
+                    <i class="fa-solid fa-bolt mr-1"></i> Sorotan Momen
+                </button>
+                <button id="adminTabCoverBtn" onclick="switchAdminTab('cover')"
+                    class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
+                    <i class="fa-solid fa-layer-group mr-1"></i> Kartu Portal
+                </button>
+            </div>
+
+            <!-- TAB 1: TAMBAH ALBUM GDRIVE -->
+            <div id="formAddDrive" class="space-y-4">
+                <form onsubmit="addNewDriveLink(event)"
+                    class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-indigo-600"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Album Folder Baru</h4>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Tempat /
+                            Aktivitas</label>
+                        <input type="text" id="adminTitle" required placeholder="Contoh: Sushi Hiro Senopati"
+                            class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Kategori</label>
+                            <select id="adminCategory"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal Foto
+                                Dibuat</label>
+                            <input type="date" id="adminDate" required
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Link Google Drive
+                            Folder</label>
+                        <input type="url" id="adminDriveUrl" required
+                            placeholder="https://drive.google.com/drive/folders/..."
+                            class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                        Simpan Album ke Portal
+                    </button>
+                </form>
+            </div>
+
+            <!-- TAB 2: TAMBAH & HAPUS SOROTAN MOMEN (DRAG & DROP) -->
+            <div id="formAddBanner" class="space-y-4 hidden">
+                <form onsubmit="addNewBanner(event)"
+                    class="space-y-3 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-emerald-700"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Banner Sorotan Baru</h4>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Judul Sorotan
+                            Momen</label>
+                        <input type="text" id="bannerTitle" required placeholder="Contoh: Trip Curug Cilember"
+                            class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Kategori</label>
+                            <select id="bannerCategory"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal
+                                Momen</label>
+                            <input type="date" id="bannerDate" required
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Latar
+                            Banner</label>
+                        <div id="bannerDropzone"
+                            class="border-2 border-dashed border-emerald-300 bg-white hover:bg-emerald-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
+                            <input type="file" id="bannerFileInput" accept="image/*" class="hidden"
+                                onchange="handleFileSelect(event, 'banner')">
+
+                            <div id="bannerDropzoneContent" class="space-y-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-emerald-500"></i>
+                                <p class="text-xs font-bold text-slate-700">Tarik & Lepas Foto di Sini</p>
+                                <p class="text-[10px] text-slate-400">atau klik untuk memilih foto dari laptop/HP</p>
+                            </div>
+
+                            <div id="bannerPreviewContainer" class="hidden relative mt-2">
+                                <img id="bannerPreviewImg"
+                                    class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                                    alt="Preview">
+                                <button type="button" onclick="removeImagePreview('banner')"
+                                    class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="bannerSubmitBtn"
+                        class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                        Tambah Banner Sorotan
+                    </button>
+                </form>
+
+                <div class="space-y-2 pt-2">
+                    <h4 class="text-xs font-extrabold uppercase text-slate-500">Daftar Sorotan Aktif:</h4>
+                    <div id="adminBannerList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: TAMBAH & HAPUS KARTU PORTAL UTAMA -->
+            <div id="formUpdateCover" class="space-y-4 hidden">
+                <form onsubmit="addNewCategory(event)"
+                    class="space-y-3 bg-rose-50/60 p-4 rounded-2xl border border-rose-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-rose-700"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Kartu Kategori Baru</h4>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Kategori
+                                Baru</label>
+                            <input type="text" id="newCatName" required placeholder="Contoh: Pantai"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tag / Label
+                                Singkat</label>
+                            <input type="text" id="newCatTag" required placeholder="Contoh: Wisata"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Sampul
+                            Kartu</label>
+                        <div id="categoryDropzone"
+                            class="border-2 border-dashed border-rose-300 bg-white hover:bg-rose-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
+                            <input type="file" id="categoryFileInput" accept="image/*" class="hidden"
+                                onchange="handleFileSelect(event, 'category')">
+
+                            <div id="categoryDropzoneContent" class="space-y-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-rose-500"></i>
+                                <p class="text-xs font-bold text-slate-700">Tarik & Lepas Foto di Sini</p>
+                                <p class="text-[10px] text-slate-400">atau klik untuk memilih foto dari laptop/HP</p>
+                            </div>
+
+                            <div id="categoryPreviewContainer" class="hidden relative mt-2">
+                                <img id="categoryPreviewImg"
+                                    class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                                    alt="Preview">
+                                <button type="button" onclick="removeImagePreview('category')"
+                                    class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="categorySubmitBtn"
+                        class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                        Tambah Kartu Kategori Portal
+                    </button>
+                </form>
+
+                <div class="space-y-2 pt-2">
+                    <h4 class="text-xs font-extrabold uppercase text-slate-500">Daftar Kartu Kategori Aktif:</h4>
+                    <div id="adminCategoryList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // =========================================================================
+        // 🔥 FIREBASE CONFIGURATION (ARSIPVITEY OFFICIAL)
+        // =========================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLDAMwW-Lzj-8v93mxCdBuEWqfaN0z-8s",
+            authDomain: "arsipvitey.firebaseapp.com",
+            projectId: "arsipvitey",
+            storageBucket: "arsipvitey.firebasestorage.app",
+            messagingSenderId: "602957751310",
+            appId: "1:602957751310:web:361dd7e6490b82606b485f"
+        };
+
+        // Inisialisasi Firebase
+        let db = null;
+        let storage = null;
+        let isFirebaseActive = false;
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            storage = firebase.storage();
+            isFirebaseActive = true;
+            console.log("🔥 Firebase Terhubung Secara Realtime!");
+        } catch (err) {
+            console.warn("Firebase fallback error:", err);
+        }
+
+        // Data Default Initial
+        const defaultArchives = [
+            { id: "1", title: "Tom Sushi Grand Indonesia", category: "Makan Sushi", date: "2024-11-12", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "2", title: "Sushi Hiro Senopati", category: "Makan Sushi", date: "2025-02-14", year: "2025", driveUrl: "https://drive.google.com" },
+            { id: "3", title: "Fotobooth", category: "Fotobooth", date: "2024-11-03", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "4", title: "Self Photo Studio Blok M", category: "Fotobooth", date: "2025-01-20", year: "2025", driveUrl: "https://drive.google.com" },
+            { id: "5", title: "GBK Morning Jogging", category: "Jogging", date: "2024-12-20", year: "2024", driveUrl: "https://drive.google.com" },
+            { id: "6", title: "Curug Cibereum Bogor", category: "Curug", date: "2026-08-07", year: "2026", driveUrl: "https://drive.google.com/drive/folders/18vGZ2XeFisQeciUsYKxawA28VB1zGg1_" }
+        ];
+
+        const defaultBanners = [
+            { id: "101", title: "Sushi Date Momen", category: "Makan Sushi", date: "12 November 2024", imageUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" },
+            { id: "102", title: "Photomatics Senayan City", category: "Fotobooth", date: "03 November 2024", imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
+            { id: "103", title: "GBK Morning Run", category: "Jogging", date: "20 Desember 2024", imageUrl: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" },
+            { id: "104", title: "curug cibereum", category: "Curug", date: "7 Agustus 2026", imageUrl: "curugtime.jpeg" }
+        ];
+
+        const defaultCategories = [
+            { id: 'cat-1', name: "Makan Sushi", tag: "Kuliner", icon: "fa-utensils", border: "border-rose-100 hover:border-rose-400", badgeBg: "bg-rose-500", coverUrl: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=800&q=80" },
+            { id: 'cat-2', name: "Fotobooth", tag: "Studio", icon: "fa-camera", border: "border-purple-100 hover:border-purple-400", badgeBg: "bg-purple-500", coverUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" },
+            { id: 'cat-3', name: "Jogging", tag: "Olahraga", icon: "fa-person-running", border: "border-emerald-100 hover:border-emerald-400", badgeBg: "bg-emerald-500", coverUrl: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" },
+            { id: 'cat-4', name: "Curug", tag: "Alam", icon: "fa-water", border: "border-sky-100 hover:border-sky-400", badgeBg: "bg-sky-500", coverUrl: "curugtime.jpeg" }
+        ];
+
+        let archives = JSON.parse(localStorage.getItem("arsipvitey_data")) || defaultArchives;
+        let banners = JSON.parse(localStorage.getItem("arsipvitey_banners")) || defaultBanners;
+        let categories = JSON.parse(localStorage.getItem("arsipvitey_categories_v2")) || defaultCategories;
+
+        let currentUser = JSON.parse(localStorage.getItem("arsipvitey_session")) || null;
+        let currentActiveCategory = "";
+        let selectedBannerFile = null;
+        let selectedCategoryFile = null;
+
+        window.onload = function () {
+            if (currentUser) {
+                showDashboard();
+            }
+            initDropzones();
+            listenRealtimeDatabase();
+        };
+
+        // Realtime Synchronizer Firestore
+        function listenRealtimeDatabase() {
+            if (!isFirebaseActive) return;
+
+            db.collection("banners").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    banners = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderBanners();
+                } else {
+                    defaultBanners.forEach(b => db.collection("banners").doc(b.id).set(b));
+                }
+            });
+
+            db.collection("categories").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                } else {
+                    defaultCategories.forEach(c => db.collection("categories").doc(c.id).set(c));
+                }
+            });
+
+            db.collection("archives").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    archives = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    updateCategoryCounts();
+                    if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                        renderCategoryAlbums();
+                    }
+                } else {
+                    defaultArchives.forEach(a => db.collection("archives").doc(String(a.id)).set(a));
+                }
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById("userId").value.trim().toLowerCase();
+            const pw = document.getElementById("userPw").value;
+            const errorEl = document.getElementById("loginError");
+
+            if ((id === "theo" || id === "viola") && pw === "03112024") {
+                currentUser = {
+                    id: id,
+                    name: id === "theo" ? "Theo" : "Viola",
+                    isAdmin: id === "theo"
+                };
+                localStorage.setItem("arsipvitey_session", JSON.stringify(currentUser));
+                errorEl.classList.add("hidden");
+                showDashboard();
+            } else {
+                errorEl.classList.remove("hidden");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem("arsipvitey_session");
+            currentUser = null;
+            document.getElementById("dashboardPage").classList.add("hidden");
+            document.getElementById("categoryDetailPage").classList.add("hidden");
+            document.getElementById("globalNavbar").classList.add("hidden");
+            document.getElementById("loginPage").classList.remove("hidden");
+        }
+
+        function showDashboard() {
+            document.getElementById("loginPage").classList.add("hidden");
+            document.getElementById("categoryDetailPage").classList.add("hidden");
+            document.getElementById("dashboardPage").classList.remove("hidden");
+            document.getElementById("globalNavbar").classList.remove("hidden");
+
+            document.getElementById("currentUserDisplay").innerText = currentUser.name;
+
+            if (currentUser.isAdmin) {
+                document.getElementById("adminTabBtn").classList.remove("hidden");
+            } else {
+                document.getElementById("adminTabBtn").classList.add("hidden");
+            }
+
+            renderCategoryDropdowns();
+            renderBanners();
+            renderCategoryCards();
+            updateCategoryCounts();
+        }
+
+        function renderCategoryDropdowns() {
+            const dropdowns = document.querySelectorAll(".dynamic-category-options");
+            dropdowns.forEach(select => {
+                select.innerHTML = "";
+                categories.forEach(cat => {
+                    const opt = document.createElement("option");
+                    opt.value = cat.name;
+                    opt.innerText = `${cat.name} (${cat.tag})`;
+                    select.appendChild(opt);
+                });
+            });
+        }
+
+        function renderBanners() {
+            const container = document.getElementById("bannerContainer");
+            container.innerHTML = "";
+
+            if (banners.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 py-4 italic">Belum ada sorotan momen. Tambahkan melalui Admin Panel.</p>`;
+                return;
+            }
+
+            banners.forEach(item => {
+                const badgeColor = item.category === "Makan Sushi" ? "bg-rose-500" :
+                    item.category === "Fotobooth" ? "bg-purple-500" :
+                        item.category === "Jogging" ? "bg-emerald-500" : "bg-sky-500";
+
+                const card = document.createElement("div");
+                card.onclick = () => openCategoryDetail(item.category);
+                card.className = `snap-start shrink-0 w-80 md:w-96 h-48 rounded-3xl light-card p-5 flex flex-col justify-end relative overflow-hidden group cursor-pointer border-indigo-200/60`;
+
+                card.innerHTML = `
+                    <img src="${item.imageUrl}" 
+                         class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" 
+                         alt="${item.title}"
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                    <div class="relative z-10 space-y-1">
+                        <span class="text-[10px] font-bold ${badgeColor} text-white px-2.5 py-0.5 rounded-full shadow-sm">${item.category}</span>
+                        <h3 class="font-bold text-lg text-white group-hover:text-indigo-200 transition">${item.title}</h3>
+                        <p class="text-xs text-slate-200 flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> ${item.date}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            renderAdminBannerList();
+        }
+
+        function renderCategoryCards() {
+            const grid = document.getElementById("categoryGrid");
+            grid.innerHTML = "";
+
+            if (categories.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 py-6 text-center italic">Belum ada kartu kategori. Tambahkan melalui Admin Panel.</p>`;
+                return;
+            }
+
+            categories.forEach(cat => {
+                const border = cat.border || "border-indigo-100 hover:border-indigo-400";
+                const badgeBg = cat.badgeBg || "bg-indigo-600";
+                const icon = cat.icon || "fa-folder";
+
+                const card = document.createElement("div");
+                card.onclick = () => openCategoryDetail(cat.name);
+                card.className = `group relative h-64 rounded-3xl overflow-hidden light-card cursor-pointer border-2 ${border}`;
+
+                card.innerHTML = `
+                    <img src="${cat.coverUrl}"
+                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out"
+                        alt="${cat.name}"
+                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                    <div class="absolute top-4 left-4">
+                        <span class="text-[10px] font-bold uppercase tracking-wider ${badgeBg} text-white px-3 py-1 rounded-full shadow-md">
+                            <i class="fa-solid ${icon} mr-1"></i> ${cat.tag}
+                        </span>
+                    </div>
+                    <div class="absolute bottom-0 p-6 space-y-1 w-full">
+                        <h3 class="text-2xl font-extrabold text-white group-hover:text-indigo-200 transition">${cat.name}</h3>
+                        <p class="text-xs text-slate-200 flex items-center justify-between pt-1">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-folder-open text-indigo-300"></i> <strong id="count-${cat.name.replace(/\s+/g, '')}" class="text-white">0</strong> Album Momen</span>
+                            <i class="fa-solid fa-arrow-right text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition duration-300 text-white"></i>
+                        </p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderAdminCategoryList();
+        }
+
+        function updateCategoryCounts() {
+            const counts = {};
+            categories.forEach(c => counts[c.name] = 0);
+
+            archives.forEach(item => {
+                if (counts[item.category] !== undefined) {
+                    counts[item.category]++;
+                }
+            });
+
+            categories.forEach(c => {
+                const el = document.getElementById(`count-${c.name.replace(/\s+/g, '')}`);
+                if (el) el.innerText = counts[c.name] || 0;
+            });
+        }
+
+        function openCategoryDetail(categoryName) {
+            currentActiveCategory = categoryName;
+            document.getElementById("dashboardPage").classList.add("hidden");
+            document.getElementById("categoryDetailPage").classList.remove("hidden");
+            document.getElementById("selectedCategoryTitle").innerText = `Kategori: ${categoryName}`;
+
+            document.getElementById("detailSearchInput").value = "";
+            document.getElementById("detailYearFilter").value = "ALL";
+
+            renderCategoryAlbums();
+        }
+
+        function renderCategoryAlbums() {
+            const grid = document.getElementById("categoryAlbumsGrid");
+            const search = document.getElementById("detailSearchInput").value.toLowerCase();
+            const year = document.getElementById("detailYearFilter").value;
+
+            grid.innerHTML = "";
+
+            const filtered = archives.filter(item => {
+                const isCat = item.category === currentActiveCategory;
+                const matchesSearch = item.title.toLowerCase().includes(search);
+                const matchesYear = year === "ALL" || item.year === year;
+                return isCat && matchesSearch && matchesYear;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                  <div class="col-span-full text-center py-20 bg-white rounded-3xl border border-slate-200/80 space-y-2">
+                    <i class="fa-regular fa-folder-open text-4xl text-slate-300 mb-1"></i>
+                    <p class="text-sm text-slate-500 font-medium">Belum ada folder foto untuk kategori ini.</p>
+                  </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "light-card p-6 rounded-3xl flex flex-col justify-between space-y-5 transition duration-300";
+
+                card.innerHTML = `
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                      <span class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+                        <i class="fa-regular fa-calendar mr-1.5"></i>${item.date}
+                      </span>
+                      <span class="text-xs font-mono font-bold text-slate-400">Tahun ${item.year}</span>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-slate-900 leading-snug">${item.title}</h3>
+                  </div>
+
+                  <a href="${item.driveUrl}" target="_blank" class="w-full py-3 bg-slate-900 hover:bg-gradient-to-r hover:from-indigo-600 hover:to-purple-600 text-white text-xs font-semibold rounded-2xl transition duration-300 text-center flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-brands fa-google-drive text-amber-400 text-sm"></i>
+                    <span>Buka Folder Google Drive</span>
+                  </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openUploadModal() {
+            document.getElementById("uploadModal").classList.remove("hidden");
+        }
+
+        function closeUploadModal() {
+            document.getElementById("uploadModal").classList.add("hidden");
+        }
+
+        function submitUploadRequest(e) {
+            e.preventDefault();
+            const title = document.getElementById("reqTitle").value;
+            const category = document.getElementById("reqCategory").value;
+            const date = document.getElementById("reqDate").value;
+            const note = document.getElementById("reqNote").value;
+
+            const waMessage = `Halo Theo! Saya (${currentUser.name}) ingin meminta izin pembuatan folder foto baru di *arsipvitey*:%0A%0A` +
+                `📌 *Nama Tempat:* ${title}%0A` +
+                `📁 *Kategori:* ${category}%0A` +
+                `📅 *Tanggal:* ${date}%0A` +
+                `📝 *Catatan:* ${note || '-'}`;
+
+            window.open(`https://wa.me/?text=${waMessage}`, "_blank");
+            closeUploadModal();
+        }
+
+        function toggleAdminModal() {
+            const modal = document.getElementById("adminModal");
+            modal.classList.toggle("hidden");
+        }
+
+        function switchAdminTab(tabName) {
+            const formDrive = document.getElementById("formAddDrive");
+            const formBanner = document.getElementById("formAddBanner");
+            const formCover = document.getElementById("formUpdateCover");
+
+            const tabDriveBtn = document.getElementById("adminTabDriveBtn");
+            const tabBannerBtn = document.getElementById("adminTabBannerBtn");
+            const tabCoverBtn = document.getElementById("adminTabCoverBtn");
+
+            formDrive.classList.add("hidden");
+            formBanner.classList.add("hidden");
+            formCover.classList.add("hidden");
+
+            tabDriveBtn.className = "flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition";
+            tabBannerBtn.className = "flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition";
+            tabCoverBtn.className = "flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition";
+
+            if (tabName === 'drive') {
+                formDrive.classList.remove("hidden");
+                tabDriveBtn.className = "flex-1 py-2 rounded-xl text-indigo-600 bg-white shadow-sm transition";
+            } else if (tabName === 'banner') {
+                formBanner.classList.remove("hidden");
+                tabBannerBtn.className = "flex-1 py-2 rounded-xl text-emerald-600 bg-white shadow-sm transition";
+            } else if (tabName === 'cover') {
+                formCover.classList.remove("hidden");
+                tabCoverBtn.className = "flex-1 py-2 rounded-xl text-rose-600 bg-white shadow-sm transition";
+            }
+        }
+
+        // ================= DRAG & DROP LOGIC =================
+        function initDropzones() {
+            setupDropzone('bannerDropzone', 'bannerFileInput', 'banner');
+            setupDropzone('categoryDropzone', 'categoryFileInput', 'category');
+        }
+
+        function setupDropzone(dropzoneId, fileInputId, type) {
+            const dropzone = document.getElementById(dropzoneId);
+            const fileInput = document.getElementById(fileInputId);
+
+            if (!dropzone || !fileInput) return;
+
+            dropzone.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+                    fileInput.click();
+                }
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('dropzone-active');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('dropzone-active');
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files && files.length > 0) {
+                    processUploadedFile(files[0], type);
+                }
+            }, false);
+        }
+
+        function handleFileSelect(event, type) {
+            const files = event.target.files;
+            if (files && files.length > 0) {
+                processUploadedFile(files[0], type);
+            }
+        }
+
+        function processUploadedFile(file, type) {
+            if (!file.type.startsWith('image/')) {
+                alert("Mohon pilih file berformat gambar (JPG, PNG, GIF, JPEG).");
+                return;
+            }
+
+            if (type === 'banner') selectedBannerFile = file;
+            if (type === 'category') selectedCategoryFile = file;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewUrl = e.target.result;
+                if (type === 'banner') {
+                    document.getElementById('bannerPreviewImg').src = previewUrl;
+                    document.getElementById('bannerDropzoneContent').classList.add('hidden');
+                    document.getElementById('bannerPreviewContainer').classList.remove('hidden');
+                } else if (type === 'category') {
+                    document.getElementById('categoryPreviewImg').src = previewUrl;
+                    document.getElementById('categoryDropzoneContent').classList.add('hidden');
+                    document.getElementById('categoryPreviewContainer').classList.remove('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImagePreview(type) {
+            if (type === 'banner') {
+                selectedBannerFile = null;
+                document.getElementById('bannerFileInput').value = '';
+                document.getElementById('bannerDropzoneContent').classList.remove('hidden');
+                document.getElementById('bannerPreviewContainer').classList.add('hidden');
+            } else if (type === 'category') {
+                selectedCategoryFile = null;
+                document.getElementById('categoryFileInput').value = '';
+                document.getElementById('categoryDropzoneContent').classList.remove('hidden');
+                document.getElementById('categoryPreviewContainer').classList.add('hidden');
+            }
+        }
+
+        // Upload Helper
+        async function uploadFileToFirebase(file, path) {
+            try {
+                if (!isFirebaseActive || !storage) return null;
+                const ref = storage.ref(`${path}/${Date.now()}_${file.name}`);
+                const snapshot = await ref.put(file);
+                return await snapshot.ref.getDownloadURL();
+            } catch (e) {
+                console.warn("Storage upload failed, falling back to Base64:", e);
+                return null;
+            }
+        }
+
+        async function addNewDriveLink(e) {
+            e.preventDefault();
+            const title = document.getElementById("adminTitle").value;
+            const category = document.getElementById("adminCategory").value;
+            const date = document.getElementById("adminDate").value;
+            const year = new Date(date).getFullYear().toString();
+            const driveUrl = document.getElementById("adminDriveUrl").value;
+
+            const newItem = { id: String(Date.now()), title, category, date, year, driveUrl };
+
+            if (isFirebaseActive) {
+                await db.collection("archives").doc(newItem.id).set(newItem);
+            } else {
+                archives.unshift(newItem);
+                localStorage.setItem("arsipvitey_data", JSON.stringify(archives));
+                updateCategoryCounts();
+                if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                    renderCategoryAlbums();
+                }
+            }
+
+            toggleAdminModal();
+            alert("Link folder Google Drive baru berhasil disimpan!");
+        }
+
+        async function addNewBanner(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById("bannerSubmitBtn");
+            const originalBtnText = submitBtn.innerText;
+
+            if (!selectedBannerFile) {
+                alert("Mohon upload foto latar banner terlebih dahulu via Drag & Drop!");
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Mengunggah Foto...";
+
+                let imageUrl = await uploadFileToFirebase(selectedBannerFile, "banners");
+                if (!imageUrl) {
+                    imageUrl = document.getElementById('bannerPreviewImg').src;
+                }
+
+                const title = document.getElementById("bannerTitle").value;
+                const category = document.getElementById("bannerCategory").value;
+                const dateRaw = document.getElementById("bannerDate").value;
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const dateFormatted = new Date(dateRaw).toLocaleDateString('id-ID', options);
+
+                const newBanner = { id: String(Date.now()), title, category, date: dateFormatted, imageUrl };
+
+                if (isFirebaseActive) {
+                    await db.collection("banners").doc(newBanner.id).set(newBanner);
+                } else {
+                    banners.unshift(newBanner);
+                    localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                    renderBanners();
+                }
+
+                document.getElementById("bannerTitle").value = "";
+                removeImagePreview('banner');
+                toggleAdminModal();
+                alert("Banner sorotan baru berhasil dipasang!");
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+
+        function renderAdminBannerList() {
+            const listContainer = document.getElementById("adminBannerList");
+            if (!listContainer) return;
+            listContainer.innerHTML = "";
+
+            banners.forEach(b => {
+                const item = document.createElement("div");
+                item.className = "flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center gap-2.5 overflow-hidden pr-2">
+                        <img src="${b.imageUrl}" class="w-10 h-10 object-cover rounded-lg shrink-0" onerror="this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80'">
+                        <div class="truncate">
+                            <h5 class="font-bold text-slate-800 truncate">${b.title}</h5>
+                            <span class="text-[10px] text-slate-500">${b.category} • ${b.date}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteBanner('${b.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-2.5 py-1 rounded-lg font-semibold shrink-0 transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+                    </button>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        async function deleteBanner(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus sorotan momen ini?")) {
+                if (isFirebaseActive) {
+                    await db.collection("banners").doc(String(id)).delete();
+                } else {
+                    banners = banners.filter(b => String(b.id) !== String(id));
+                    localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                    renderBanners();
+                }
+            }
+        }
+
+        async function addNewCategory(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById("categorySubmitBtn");
+            const originalBtnText = submitBtn.innerText;
+
+            if (!selectedCategoryFile) {
+                alert("Mohon upload foto sampul kartu terlebih dahulu via Drag & Drop!");
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Mengunggah Foto...";
+
+                let coverUrl = await uploadFileToFirebase(selectedCategoryFile, "categories");
+                if (!coverUrl) {
+                    coverUrl = document.getElementById('categoryPreviewImg').src;
+                }
+
+                const name = document.getElementById("newCatName").value.trim();
+                const tag = document.getElementById("newCatTag").value.trim();
+
+                const newCat = {
+                    id: 'cat-' + Date.now(),
+                    name: name,
+                    tag: tag,
+                    icon: "fa-folder",
+                    border: "border-indigo-100 hover:border-indigo-400",
+                    badgeBg: "bg-indigo-600",
+                    coverUrl: coverUrl
+                };
+
+                if (isFirebaseActive) {
+                    await db.collection("categories").doc(newCat.id).set(newCat);
+                } else {
+                    categories.push(newCat);
+                    localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                }
+
+                document.getElementById("newCatName").value = "";
+                document.getElementById("newCatTag").value = "";
+                removeImagePreview('category');
+                toggleAdminModal();
+                alert(`Kartu Kategori "${name}" berhasil ditambahkan ke Portal Utama!`);
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+
+        function renderAdminCategoryList() {
+            const listContainer = document.getElementById("adminCategoryList");
+            if (!listContainer) return;
+            listContainer.innerHTML = "";
+
+            categories.forEach(c => {
+                const item = document.createElement("div");
+                item.className = "flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center gap-2.5 overflow-hidden pr-2">
+                        <img src="${c.coverUrl}" class="w-10 h-10 object-cover rounded-lg shrink-0" onerror="this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80'">
+                        <div class="truncate">
+                            <h5 class="font-bold text-slate-800 truncate">${c.name}</h5>
+                            <span class="text-[10px] text-slate-500">Label: ${c.tag}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteCategory('${c.id}')" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-2.5 py-1 rounded-lg font-semibold shrink-0 transition">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Hapus
+                    </button>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        async function deleteCategory(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus Kartu Kategori ini dari Portal Utama?")) {
+                if (isFirebaseActive) {
+                    await db.collection("categories").doc(String(id)).delete();
+                } else {
+                    categories = categories.filter(c => String(c.id) !== String(id));
+                    localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                    renderCategoryDropdowns();
+                    renderCategoryCards();
+                    updateCategoryCounts();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
