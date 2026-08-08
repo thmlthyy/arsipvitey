@@ -107,20 +107,24 @@
     <div id="loginPage" class="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div class="w-full max-w-md light-panel p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden bg-white/95">
 
-            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-indigo-500 to-emerald-500">
+            <div
+                class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-indigo-500 to-emerald-500">
             </div>
 
             <div class="text-center mb-8">
-                <div class="inline-flex p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100 mb-3 shadow-sm">
+                <div
+                    class="inline-flex p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100 mb-3 shadow-sm">
                     <i class="fa-solid fa-box-archive text-3xl"></i>
                 </div>
                 <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">arsipvitey</h1>
-                <p class="text-xs text-slate-500 mt-1 font-semibold tracking-wider uppercase">Portal Foto & Memori Digital</p>
+                <p class="text-xs text-slate-500 mt-1 font-semibold tracking-wider uppercase">Portal Foto & Memori
+                    Digital</p>
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">User ID</label>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">User
+                        ID</label>
                     <div class="relative">
                         <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-400 text-sm"></i>
                         <input type="text" id="userId" required placeholder="Masukkan ID"
@@ -129,7 +133,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Password</label>
+                    <label
+                        class="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Password</label>
                     <div class="relative">
                         <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-400 text-sm"></i>
                         <input type="password" id="userPw" required placeholder="••••••••"
@@ -139,7 +144,8 @@
 
                 <p id="loginError"
                     class="text-xs text-rose-600 hidden flex items-center gap-1.5 bg-rose-50 p-3 rounded-xl border border-rose-200 font-medium">
-                    <i class="fa-solid fa-circle-exclamation text-rose-500"></i> ID atau Password salah! Silakan coba lagi.
+                    <i class="fa-solid fa-circle-exclamation text-rose-500"></i> ID atau Password salah! Silakan coba
+                    lagi.
                 </p>
 
                 <button type="submit"
@@ -156,11 +162,13 @@
         class="hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 md:px-8 py-3.5 shadow-sm">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="showDashboard()">
-                <div class="p-2.5 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition duration-200">
+                <div
+                    class="p-2.5 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition duration-200">
                     <i class="fa-solid fa-box-archive text-base"></i>
                 </div>
                 <div>
-                    <span class="font-extrabold text-lg tracking-tight text-slate-900 block leading-none">arsipvitey</span>
+                    <span
+                        class="font-extrabold text-lg tracking-tight text-slate-900 block leading-none">arsipvitey</span>
                     <span class="text-[10px] text-indigo-600 font-bold tracking-wider">PHOTO ARCHIVE</span>
                 </div>
             </div>
@@ -172,11 +180,6 @@
                         Halo, <strong id="currentUserDisplay" class="text-indigo-600"></strong> 👋
                     </span>
                 </div>
-
-                <button id="adminTabBtn" onclick="toggleAdminModal()"
-                    class="hidden text-xs bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-3.5 py-1.5 rounded-full hover:bg-indigo-100 transition font-semibold flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-shield-halved text-indigo-600"></i> <span class="hidden sm:inline">Admin Panel</span>
-                </button>
 
                 <button onclick="handleLogout()"
                     class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
@@ -195,7 +198,8 @@
             <section>
                 <div class="flex justify-between items-end mb-4">
                     <div>
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                        <span
+                            class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
                             <i class="fa-solid fa-bolt"></i> Highlight Aktivitas
                         </span>
                         <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Sorotan Momen Foto</h2>
@@ -213,16 +217,18 @@
             <section>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                     <div>
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
+                        <span
+                            class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
                             <i class="fa-solid fa-layer-group"></i> Portal Utama
                         </span>
                         <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Kategori Album Foto</h2>
                     </div>
 
-                    <button onclick="openUploadModal()"
-                        class="self-start sm:self-auto text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
-                        <i class="fa-solid fa-paper-plane text-xs"></i>
-                        <span>Minta Ajukan Folder Baru</span>
+                    <!-- TOMBOL FITUR ADMIN DENGAN NAMA "TAMBAHKAN" -->
+                    <button onclick="toggleAdminModal()"
+                        class="self-start sm:self-auto text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-indigo-600/20 transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span>Tambahkan</span>
                     </button>
                 </div>
 
@@ -241,17 +247,21 @@
                     <div class="flex items-center gap-4">
                         <button onclick="showDashboard()"
                             class="p-3 bg-slate-100 hover:bg-indigo-50 border border-slate-200 rounded-2xl text-slate-700 transition group shadow-sm">
-                            <i class="fa-solid fa-arrow-left text-sm group-hover:-translate-x-1 transition duration-200"></i>
+                            <i
+                                class="fa-solid fa-arrow-left text-sm group-hover:-translate-x-1 transition duration-200"></i>
                         </button>
                         <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600">Arsip Foto Terkategori</span>
-                            <h1 id="selectedCategoryTitle" class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-0.5">Category Name</h1>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600">Arsip Foto
+                                Terkategori</span>
+                            <h1 id="selectedCategoryTitle"
+                                class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-0.5">Category Name</h1>
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative min-w-[220px]">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
                             <input type="text" id="detailSearchInput" oninput="renderCategoryAlbums()"
                                 placeholder="Cari tempat / lokasi..."
                                 class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:bg-white text-xs text-slate-800 placeholder:text-slate-400">
@@ -273,100 +283,51 @@
         </main>
     </div>
 
-    <!-- ================= MODAL REQUEST UPLOAD ================= -->
-    <div id="uploadModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 space-y-6 relative border border-slate-200 shadow-2xl">
-
-            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
-                <div class="flex items-center gap-2.5">
-                    <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl border border-emerald-100">
-                        <i class="fa-brands fa-whatsapp text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base text-slate-900">Izin Pembuatan Folder</h3>
-                        <p class="text-[11px] text-slate-500 font-medium">Pengajuan izin ke Admin</p>
-                    </div>
-                </div>
-                <button onclick="closeUploadModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-
-            <form onsubmit="submitUploadRequest(event)" class="space-y-4">
-                <div>
-                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Nama Tempat / Aktivitas Foto</label>
-                    <input type="text" id="reqTitle" required placeholder="Contoh: Tom Sushi Grand Indonesia"
-                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:border-indigo-500 focus:bg-white">
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Kategori</label>
-                        <select id="reqCategory"
-                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none dynamic-category-options">
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Tanggal Foto</label>
-                        <input type="date" id="reqDate" required
-                            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-700 focus:outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1.5">Catatan Tambahan</label>
-                    <textarea id="reqNote" rows="2" placeholder="Catatan singkat mengenai foto..."
-                        class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:bg-white"></textarea>
-                </div>
-
-                <div class="bg-emerald-50 border border-emerald-200/80 p-3.5 rounded-2xl text-xs text-emerald-800 flex items-start gap-2.5">
-                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5"></i>
-                    <span>Pesan otomatis siap kirim akan dibuka langsung di WhatsApp Theo/Viola.</span>
-                </div>
-
-                <button type="submit"
-                    class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Kirim Permintaan Izin</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ================= MODAL ADMIN PANEL ================= -->
-    <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-xl p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+    <!-- ================= MODAL ADMIN / TAMBAHKAN PANEL ================= -->
+    <div id="adminModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-xl p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
 
             <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100">
-                        <i class="fa-solid fa-shield-halved text-lg"></i>
+                        <i class="fa-solid fa-plus text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-base text-slate-900">Admin Control Panel</h3>
-                        <p class="text-[11px] text-slate-500 font-medium">Akses Khusus Admin (Theo & Viola)</p>
+                        <h3 class="font-bold text-base text-slate-900">Panel Tambahkan Data</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Kelola Album, Sorotan Momen & Kategori</p>
                     </div>
                 </div>
-                <button onclick="toggleAdminModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="toggleAdminModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
             <!-- Tab Switcher Admin -->
             <div class="flex bg-slate-100 p-1 rounded-2xl text-xs font-semibold gap-1">
-                <button id="adminTabDriveBtn" onclick="switchAdminTab('drive')" class="flex-1 py-2 rounded-xl text-indigo-600 bg-white shadow-sm transition">
+                <button id="adminTabDriveBtn" onclick="switchAdminTab('drive')"
+                    class="flex-1 py-2 rounded-xl text-indigo-600 bg-white shadow-sm transition">
                     <i class="fa-solid fa-folder mr-1"></i> Album Drive
                 </button>
-                <button id="adminTabBannerBtn" onclick="switchAdminTab('banner')" class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
+                <button id="adminTabBannerBtn" onclick="switchAdminTab('banner')"
+                    class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
                     <i class="fa-solid fa-bolt mr-1"></i> Sorotan Momen
                 </button>
-                <button id="adminTabCoverBtn" onclick="switchAdminTab('cover')" class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
+                <button id="adminTabCoverBtn" onclick="switchAdminTab('cover')"
+                    class="flex-1 py-2 rounded-xl text-slate-500 hover:text-slate-800 transition">
                     <i class="fa-solid fa-layer-group mr-1"></i> Kartu Portal
                 </button>
             </div>
 
             <!-- TAB 1: TAMBAH ALBUM GDRIVE -->
             <div id="formAddDrive" class="space-y-4">
-                <form onsubmit="addNewDriveLink(event)" class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
-                    <h4 class="text-xs font-extrabold uppercase text-indigo-600"><i class="fa-solid fa-plus-circle mr-1"></i> Tambah Album Folder Baru</h4>
+                <form onsubmit="addNewDriveLink(event)"
+                    class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-indigo-600"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Album Folder Baru</h4>
                     <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Tempat / Aktivitas</label>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Tempat /
+                            Aktivitas</label>
                         <input type="text" id="adminTitle" required placeholder="Contoh: Sushi Hiro Senopati"
                             class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
                     </div>
@@ -374,22 +335,28 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Kategori</label>
-                            <select id="adminCategory" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
+                            <select id="adminCategory"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal Foto Dibuat</label>
-                            <input type="date" id="adminDate" required class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal Foto
+                                Dibuat</label>
+                            <input type="date" id="adminDate" required
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Link Google Drive Folder</label>
-                        <input type="url" id="adminDriveUrl" required placeholder="https://drive.google.com/drive/folders/..."
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Link Google Drive
+                            Folder</label>
+                        <input type="url" id="adminDriveUrl" required
+                            placeholder="https://drive.google.com/drive/folders/..."
                             class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
                     </div>
 
-                    <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                    <button type="submit"
+                        class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
                         Simpan Album ke Portal
                     </button>
                 </form>
@@ -397,10 +364,13 @@
 
             <!-- TAB 2: TAMBAH & HAPUS SOROTAN MOMEN -->
             <div id="formAddBanner" class="space-y-4 hidden">
-                <form onsubmit="addNewBanner(event)" class="space-y-3 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-200/80">
-                    <h4 class="text-xs font-extrabold uppercase text-emerald-700"><i class="fa-solid fa-plus-circle mr-1"></i> Tambah Banner Sorotan Baru</h4>
+                <form onsubmit="addNewBanner(event)"
+                    class="space-y-3 bg-emerald-50/60 p-4 rounded-2xl border border-emerald-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-emerald-700"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Banner Sorotan Baru</h4>
                     <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Judul Sorotan Momen</label>
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Judul Sorotan
+                            Momen</label>
                         <input type="text" id="bannerTitle" required placeholder="Contoh: Trip Curug Cilember"
                             class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
                     </div>
@@ -408,20 +378,26 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Kategori</label>
-                            <select id="bannerCategory" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
+                            <select id="bannerCategory"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal Momen</label>
-                            <input type="date" id="bannerDate" required class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal
+                                Momen</label>
+                            <input type="date" id="bannerDate" required
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Latar Banner</label>
-                        <div id="bannerDropzone" class="border-2 border-dashed border-emerald-300 bg-white hover:bg-emerald-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
-                            <input type="file" id="bannerFileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event, 'banner')">
-                            
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Latar
+                            Banner</label>
+                        <div id="bannerDropzone"
+                            class="border-2 border-dashed border-emerald-300 bg-white hover:bg-emerald-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
+                            <input type="file" id="bannerFileInput" accept="image/*" class="hidden"
+                                onchange="handleFileSelect(event, 'banner')">
+
                             <div id="bannerDropzoneContent" class="space-y-1.5">
                                 <i class="fa-solid fa-cloud-arrow-up text-2xl text-emerald-500"></i>
                                 <p class="text-xs font-bold text-slate-700">Tarik & Lepas Foto di Sini</p>
@@ -429,15 +405,19 @@
                             </div>
 
                             <div id="bannerPreviewContainer" class="hidden relative mt-2">
-                                <img id="bannerPreviewImg" class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm" alt="Preview">
-                                <button type="button" onclick="removeImagePreview('banner')" class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
+                                <img id="bannerPreviewImg"
+                                    class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                                    alt="Preview">
+                                <button type="button" onclick="removeImagePreview('banner')"
+                                    class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" id="bannerSubmitBtn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                    <button type="submit" id="bannerSubmitBtn"
+                        class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
                         Tambah Banner Sorotan
                     </button>
                 </form>
@@ -451,25 +431,34 @@
 
             <!-- TAB 3: TAMBAH & HAPUS KARTU PORTAL UTAMA -->
             <div id="formUpdateCover" class="space-y-4 hidden">
-                <form onsubmit="addNewCategory(event)" class="space-y-3 bg-rose-50/60 p-4 rounded-2xl border border-rose-200/80">
-                    <h4 class="text-xs font-extrabold uppercase text-rose-700"><i class="fa-solid fa-plus-circle mr-1"></i> Tambah Kartu Kategori Baru</h4>
-                    
+                <form onsubmit="addNewCategory(event)"
+                    class="space-y-3 bg-rose-50/60 p-4 rounded-2xl border border-rose-200/80">
+                    <h4 class="text-xs font-extrabold uppercase text-rose-700"><i
+                            class="fa-solid fa-plus-circle mr-1"></i> Tambah Kartu Kategori Baru</h4>
+
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Kategori Baru</label>
-                            <input type="text" id="newCatName" required placeholder="Contoh: Pantai" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Kategori
+                                Baru</label>
+                            <input type="text" id="newCatName" required placeholder="Contoh: Pantai"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tag / Label Singkat</label>
-                            <input type="text" id="newCatTag" required placeholder="Contoh: Wisata" class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
+                            <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tag / Label
+                                Singkat</label>
+                            <input type="text" id="newCatTag" required placeholder="Contoh: Wisata"
+                                class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Sampul Kartu</label>
-                        <div id="categoryDropzone" class="border-2 border-dashed border-rose-300 bg-white hover:bg-rose-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
-                            <input type="file" id="categoryFileInput" accept="image/*" class="hidden" onchange="handleFileSelect(event, 'category')">
-                            
+                        <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Upload Foto Sampul
+                            Kartu</label>
+                        <div id="categoryDropzone"
+                            class="border-2 border-dashed border-rose-300 bg-white hover:bg-rose-50/50 p-4 rounded-2xl text-center cursor-pointer transition duration-200 relative">
+                            <input type="file" id="categoryFileInput" accept="image/*" class="hidden"
+                                onchange="handleFileSelect(event, 'category')">
+
                             <div id="categoryDropzoneContent" class="space-y-1.5">
                                 <i class="fa-solid fa-cloud-arrow-up text-2xl text-rose-500"></i>
                                 <p class="text-xs font-bold text-slate-700">Tarik & Lepas Foto di Sini</p>
@@ -477,15 +466,19 @@
                             </div>
 
                             <div id="categoryPreviewContainer" class="hidden relative mt-2">
-                                <img id="categoryPreviewImg" class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm" alt="Preview">
-                                <button type="button" onclick="removeImagePreview('category')" class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
+                                <img id="categoryPreviewImg"
+                                    class="h-32 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                                    alt="Preview">
+                                <button type="button" onclick="removeImagePreview('category')"
+                                    class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
                                     <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" id="categorySubmitBtn" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                    <button type="submit" id="categorySubmitBtn"
+                        class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
                         Tambah Kartu Kategori Portal
                     </button>
                 </form>
@@ -565,12 +558,36 @@
 
         window.onload = function () {
             initAutoLogoutSystem();
+            initMobileHistorySystem();
+
             if (currentUser) {
-                showDashboard();
+                showDashboard(false);
             }
             initDropzones();
             listenRealtimeDatabase();
         };
+
+        // ================= FITUR NAVIGASI TOMBOL BACK HP (<) =================
+        function initMobileHistorySystem() {
+            window.addEventListener('popstate', function (event) {
+                // Jika Modal Panel Tambahkan terbuka -> Tutup Modal
+                const adminModal = document.getElementById("adminModal");
+                if (!adminModal.classList.contains("hidden")) {
+                    adminModal.classList.add("hidden");
+                    return;
+                }
+
+                // Navigasi Halaman
+                const state = event.state;
+                if (state && state.page === "categoryDetail" && state.category) {
+                    renderCategoryDetailPage(state.category);
+                } else if (state && state.page === "dashboard") {
+                    renderDashboardPage();
+                } else if (currentUser) {
+                    renderDashboardPage();
+                }
+            });
+        }
 
         // ================= FITUR AUTOLOGOUT (10 MENIT DILUAR WEB) =================
         function initAutoLogoutSystem() {
@@ -580,7 +597,6 @@
                 if (!currentUser) return;
 
                 if (document.hidden) {
-                    // Pengguna meninggalkan tab/layar web
                     localStorage.setItem("arsipvitey_leave_time", Date.now().toString());
 
                     if (awayTimer) clearTimeout(awayTimer);
@@ -588,7 +604,6 @@
                         handleLogout(true);
                     }, AUTO_LOGOUT_TIME_MS);
                 } else {
-                    // Pengguna kembali ke tab
                     if (awayTimer) {
                         clearTimeout(awayTimer);
                         awayTimer = null;
@@ -666,12 +681,12 @@
                 currentUser = {
                     id: id,
                     name: id === "theo" ? "Theo" : "Viola",
-                    isAdmin: true // KEDUA AKUN (THEO & VIOLA) SEKARANG MEMILIKI FITUR ADMIN
+                    isAdmin: true
                 };
                 localStorage.setItem("arsipvitey_session", JSON.stringify(currentUser));
                 localStorage.removeItem("arsipvitey_leave_time");
                 errorEl.classList.add("hidden");
-                showDashboard();
+                showDashboard(true);
             } else {
                 errorEl.classList.remove("hidden");
             }
@@ -694,20 +709,20 @@
             }
         }
 
-        function showDashboard() {
+        function showDashboard(pushHistory = true) {
+            if (pushHistory) {
+                history.pushState({ page: "dashboard" }, "", "");
+            }
+            renderDashboardPage();
+        }
+
+        function renderDashboardPage() {
             document.getElementById("loginPage").classList.add("hidden");
             document.getElementById("categoryDetailPage").classList.add("hidden");
             document.getElementById("dashboardPage").classList.remove("hidden");
             document.getElementById("globalNavbar").classList.remove("hidden");
 
             document.getElementById("currentUserDisplay").innerText = currentUser.name;
-
-            // Admin panel tampil untuk Theo maupun Viola
-            if (currentUser.isAdmin) {
-                document.getElementById("adminTabBtn").classList.remove("hidden");
-            } else {
-                document.getElementById("adminTabBtn").classList.add("hidden");
-            }
 
             renderCategoryDropdowns();
             renderBanners();
@@ -733,14 +748,14 @@
             container.innerHTML = "";
 
             if (banners.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 py-4 italic">Belum ada sorotan momen. Tambahkan melalui Admin Panel.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 py-4 italic">Belum ada sorotan momen. Tambahkan melalui Panel Tambahkan.</p>`;
                 return;
             }
 
             banners.forEach(item => {
                 const badgeColor = item.category === "Makan Sushi" ? "bg-rose-500" :
-                                  item.category === "Fotobooth" ? "bg-purple-500" :
-                                  item.category === "Jogging" ? "bg-emerald-500" : "bg-sky-500";
+                    item.category === "Fotobooth" ? "bg-purple-500" :
+                        item.category === "Jogging" ? "bg-emerald-500" : "bg-sky-500";
 
                 const card = document.createElement("div");
                 card.onclick = () => openCategoryDetail(item.category);
@@ -769,7 +784,7 @@
             grid.innerHTML = "";
 
             if (categories.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 py-6 text-center italic">Belum ada kartu kategori. Tambahkan melalui Admin Panel.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 py-6 text-center italic">Belum ada kartu kategori. Tambahkan melalui Panel Tambahkan.</p>`;
                 return;
             }
 
@@ -823,7 +838,14 @@
             });
         }
 
-        function openCategoryDetail(categoryName) {
+        function openCategoryDetail(categoryName, pushHistory = true) {
+            if (pushHistory) {
+                history.pushState({ page: "categoryDetail", category: categoryName }, "", "");
+            }
+            renderCategoryDetailPage(categoryName);
+        }
+
+        function renderCategoryDetailPage(categoryName) {
             currentActiveCategory = categoryName;
             document.getElementById("dashboardPage").classList.add("hidden");
             document.getElementById("categoryDetailPage").classList.remove("hidden");
@@ -883,34 +905,16 @@
             });
         }
 
-        function openUploadModal() {
-            document.getElementById("uploadModal").classList.remove("hidden");
-        }
-
-        function closeUploadModal() {
-            document.getElementById("uploadModal").classList.add("hidden");
-        }
-
-        function submitUploadRequest(e) {
-            e.preventDefault();
-            const title = document.getElementById("reqTitle").value;
-            const category = document.getElementById("reqCategory").value;
-            const date = document.getElementById("reqDate").value;
-            const note = document.getElementById("reqNote").value;
-
-            const waMessage = `Halo! Saya (${currentUser.name}) ingin meminta izin pembuatan folder foto baru di *arsipvitey*:%0A%0A` +
-                `📌 *Nama Tempat:* ${title}%0A` +
-                `📁 *Kategori:* ${category}%0A` +
-                `📅 *Tanggal:* ${date}%0A` +
-                `📝 *Catatan:* ${note || '-'}`;
-
-            window.open(`https://wa.me/?text=${waMessage}`, "_blank");
-            closeUploadModal();
-        }
-
         function toggleAdminModal() {
             const modal = document.getElementById("adminModal");
-            modal.classList.toggle("hidden");
+            const isHidden = modal.classList.contains("hidden");
+
+            if (isHidden) {
+                history.pushState({ modal: "admin" }, "", "");
+                modal.classList.remove("hidden");
+            } else {
+                modal.classList.add("hidden");
+            }
         }
 
         function switchAdminTab(tabName) {
@@ -992,7 +996,6 @@
             }
         }
 
-        // FUNGSI KOMPRESI GAMBAR OTOMATIS SEBELUM SIMPAN KE FIRESTORE
         function compressAndConvertToBase64(file, maxWidth = 900, quality = 0.75) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1116,12 +1119,12 @@
                 const options = { day: 'numeric', month: 'long', year: 'numeric' };
                 const dateFormatted = new Date(dateRaw).toLocaleDateString('id-ID', options);
 
-                const newBanner = { 
-                    id: String(Date.now()), 
-                    title, 
-                    category, 
-                    date: dateFormatted, 
-                    imageUrl: imageUrl 
+                const newBanner = {
+                    id: String(Date.now()),
+                    title,
+                    category,
+                    date: dateFormatted,
+                    imageUrl: imageUrl
                 };
 
                 if (isFirebaseActive) {
