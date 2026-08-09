@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>arsipvitey Portal Arsip Kenangan</title>
+    <title>arsipvitey — Portal Arsip Kenangan</title>
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -174,7 +174,6 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <!-- KLIK "HALO, USER" UNTUK MEMBUKA EVENT LOG -->
                 <div onclick="openLogModal()"
                     class="flex items-center gap-2 bg-slate-100 hover:bg-indigo-50 border border-slate-200/80 hover:border-indigo-200 px-3.5 py-1.5 rounded-full cursor-pointer transition duration-200 shadow-sm"
                     title="Klik untuk lihat Aktivitas Log">
@@ -198,7 +197,7 @@
     <div id="dashboardPage" class="hidden relative z-10 min-h-screen pb-20">
         <main class="max-w-7xl mx-auto px-4 md:px-8 pt-8 space-y-10">
 
-            <!-- Banner Scroll Aktivitas -->
+            <!-- 1. BANNER SCROLL AKTIVITAS (SOROTAN MOMEN FOTO) -->
             <section>
                 <div class="flex justify-between items-end mb-4">
                     <div>
@@ -217,9 +216,54 @@
                 </div>
             </section>
 
-            <!-- Kategori Utama Grid -->
+            <!-- 2. WIDGET HITUNG MUNDUR HARI SPESIAL & INFORMASI UMUR (DI TENANGAH) -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Card Anniversary -->
+                <div class="light-card p-4 rounded-2xl flex items-center gap-3.5 border-l-4 border-l-rose-500">
+                    <div class="p-3 bg-rose-50 text-rose-600 rounded-2xl text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-rose-500 uppercase tracking-wider block">Anniversary (3
+                            Nov 2024)</span>
+                        <p class="text-[11px] text-slate-500 font-semibold">Umur Hubungan: <strong id="annivAgeDisplay"
+                                class="text-slate-700"></strong></p>
+                        <h4 id="countdownAnniv" class="font-extrabold text-xs text-rose-600 mt-0.5">Menghitung...</h4>
+                    </div>
+                </div>
+
+                <!-- Card Ultah Theo -->
+                <div class="light-card p-4 rounded-2xl flex items-center gap-3.5 border-l-4 border-l-indigo-500">
+                    <div class="p-3 bg-indigo-50 text-indigo-600 rounded-2xl text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider block">Ultah Theo (2
+                            Sep 2004)</span>
+                        <p class="text-[11px] text-slate-500 font-semibold">Umur Theo: <strong id="theoAgeDisplay"
+                                class="text-slate-700"></strong></p>
+                        <h4 id="countdownTheo" class="font-extrabold text-xs text-indigo-600 mt-0.5">Menghitung...</h4>
+                    </div>
+                </div>
+
+                <!-- Card Ultah Viola -->
+                <div class="light-card p-4 rounded-2xl flex items-center gap-3.5 border-l-4 border-l-purple-500">
+                    <div class="p-3 bg-purple-50 text-purple-600 rounded-2xl text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-purple-500 uppercase tracking-wider block">Ultah Viola
+                            (30 Agt 2004)</span>
+                        <p class="text-[11px] text-slate-500 font-semibold">Umur Viola: <strong id="violaAgeDisplay"
+                                class="text-slate-700"></strong></p>
+                        <h4 id="countdownViola" class="font-extrabold text-xs text-purple-600 mt-0.5">Menghitung...</h4>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. KATEGORI UTAMA GRID & QUICK SEARCH BAR -->
             <section>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
                     <div>
                         <span
                             class="text-[11px] font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-1.5">
@@ -228,12 +272,46 @@
                         <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Kategori Album Foto</h2>
                     </div>
 
-                    <!-- TOMBOL FITUR ADMIN DENGAN NAMA "TAMBAHKAN" -->
-                    <button onclick="toggleAdminModal()"
-                        class="self-start sm:self-auto text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-indigo-600/20 transition flex items-center gap-2">
-                        <i class="fa-solid fa-plus text-xs"></i>
-                        <span>Tambahkan</span>
-                    </button>
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <div class="relative min-w-[180px] flex-1 sm:flex-none">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                            <input type="text" id="quickSearchInput" oninput="renderCategoryCards()"
+                                placeholder="Cari kategori..."
+                                class="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 text-xs text-slate-800 placeholder:text-slate-400 shadow-sm transition">
+                        </div>
+
+                        <!-- TOMBOL CHAT -->
+                        <button onclick="openChatModal()"
+                            class="text-xs bg-sky-600 hover:bg-sky-500 text-white font-semibold px-3.5 py-2.5 rounded-xl shadow-md shadow-sky-600/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-comments text-xs"></i>
+                            <span>Chat</span>
+                        </button>
+
+                        <button onclick="shakeRandomMemory()"
+                            class="text-xs bg-amber-500 hover:bg-amber-400 text-white font-semibold px-3.5 py-2.5 rounded-xl shadow-md shadow-amber-500/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-dice text-xs"></i>
+                            <span>Kocok Kenangan</span>
+                        </button>
+
+                        <button onclick="openWishlistModal()"
+                            class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3.5 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                            <span>Momen Impian</span>
+                        </button>
+
+                        <button onclick="openNotesModal()"
+                            class="text-xs bg-pink-600 hover:bg-pink-500 text-white font-semibold px-3.5 py-2.5 rounded-xl shadow-md shadow-pink-600/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-envelope-open-text text-xs"></i>
+                            <span>Pesan Rahasia</span>
+                        </button>
+
+                        <button onclick="toggleAdminModal()"
+                            class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-3.5 py-2.5 rounded-xl shadow-md shadow-indigo-600/20 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>Tambahkan</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div id="categoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -287,6 +365,159 @@
         </main>
     </div>
 
+    <!-- ================= MODAL CHAT BERDUA ================= -->
+    <div id="chatModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-lg p-5 md:p-6 space-y-4 relative border border-slate-200 shadow-2xl h-[80vh] flex flex-col">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-sky-50 text-sky-600 rounded-2xl border border-sky-100">
+                        <i class="fa-solid fa-comments text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900">Ruang Obrolan 💬</h3>
+                        <p class="text-[10px] text-slate-400 font-medium">Otomatis dibersihkan jika > 1 Bulan</p>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="chatMessagesContainer" class="flex-1 overflow-y-auto space-y-3 pr-1 no-scrollbar flex flex-col">
+            </div>
+
+            <form onsubmit="handleSendChatMessage(event)" class="flex gap-2 shrink-0 pt-2 border-t border-slate-100">
+                <input type="text" id="chatInputText" required placeholder="Tulis pesan..."
+                    class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-800 focus:outline-none focus:border-sky-500 focus:bg-white">
+                <button type="submit"
+                    class="p-3 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl transition shadow-md shadow-sky-600/20 px-5">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL KOCOK KENANGAN ================= -->
+    <div id="randomMemoryModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 space-y-6 relative border border-slate-200 shadow-2xl text-center">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-amber-50 text-amber-600 rounded-2xl border border-amber-100">
+                        <i class="fa-solid fa-dice text-xl animate-spin"></i>
+                    </div>
+                    <div class="text-left">
+                        <h3 class="font-bold text-base text-slate-900">Kocok Kenangan 🎲</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Flashback Momen Spesial Berdua</p>
+                    </div>
+                </div>
+                <button onclick="closeRandomMemoryModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="randomMemoryContent" class="space-y-4">
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="shakeRandomMemory()"
+                    class="flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-white font-semibold text-xs rounded-2xl transition shadow-md shadow-amber-500/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-dice"></i>
+                    <span>Kocok Lagi</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL MOMEN IMPIAN / WISHLIST ================= -->
+    <div id="wishlistModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[85vh] flex flex-col">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl border border-emerald-100">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900">Momen Impian & Wishlist ✈️</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Daftar tempat & aktivitas impian berdua</p>
+                    </div>
+                </div>
+                <button onclick="closeWishlistModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="handleAddWishlist(event)"
+                class="space-y-3 bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-100 shrink-0">
+                <div class="flex gap-2">
+                    <input type="text" id="wishlistTitle" required placeholder="Contoh: Trip War Tiket Pulau Seribu..."
+                        class="flex-1 p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-emerald-500">
+                    <button type="submit"
+                        class="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition shadow-sm shrink-0">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah
+                    </button>
+                </div>
+            </form>
+
+            <div id="wishlistContainer" class="space-y-2.5 overflow-y-auto no-scrollbar pr-1 flex-1">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL PESAN RAHASIA ================= -->
+    <div id="notesModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[85vh] flex flex-col">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-pink-50 text-pink-600 rounded-2xl border border-pink-100">
+                        <i class="fa-solid fa-envelope-open-text text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-slate-900">Pesan Rahasia 💌</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Surat digital manis khusus Theo & Viola</p>
+                    </div>
+                </div>
+                <button onclick="closeNotesModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="handleAddSecretNote(event)"
+                class="space-y-3 bg-pink-50/60 p-3.5 rounded-2xl border border-pink-100 shrink-0">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-[11px] font-bold text-pink-700 uppercase tracking-wider">Kirim Pesan Ke:</span>
+                    <select id="noteReceiver"
+                        class="p-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:outline-none">
+                        <option value="Viola">Viola 🌸</option>
+                        <option value="Theo">Theo 👑</option>
+                    </select>
+                </div>
+                <textarea id="noteContent" rows="2" required
+                    placeholder="Tulis ungkapan manis atau apresiasi hari ini..."
+                    class="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-pink-500"></textarea>
+                <button type="submit"
+                    class="w-full py-2 bg-pink-600 hover:bg-pink-500 text-white font-semibold text-xs rounded-xl transition shadow-sm flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Kirim Pesan Rahasia</span>
+                </button>
+            </form>
+
+            <div id="notesContainer" class="space-y-3 overflow-y-auto no-scrollbar pr-1 flex-1">
+            </div>
+
+        </div>
+    </div>
+
     <!-- ================= MODAL MANAGE (EDIT & HAPUS) ================= -->
     <div id="manageModal"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
@@ -324,7 +555,6 @@
                         class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
                 </div>
 
-                <!-- DRAG & DROP GANTI FOTO SAMPUL KARTU PORTAL -->
                 <div id="manageImageContainer" class="hidden">
                     <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Ganti Foto Sampul / Latar
                         Kartu</label>
@@ -408,7 +638,6 @@
             </div>
 
             <div id="logListContainer" class="space-y-3 overflow-y-auto no-scrollbar pr-1 flex-1">
-                <!-- Log Items Rendered Here -->
             </div>
 
         </div>
@@ -678,6 +907,9 @@
         let banners = JSON.parse(localStorage.getItem("arsipvitey_banners")) || defaultBanners;
         let categories = JSON.parse(localStorage.getItem("arsipvitey_categories_v2")) || defaultCategories;
         let logs = JSON.parse(localStorage.getItem("arsipvitey_logs")) || [];
+        let wishlists = JSON.parse(localStorage.getItem("arsipvitey_wishlists")) || [];
+        let secretNotes = JSON.parse(localStorage.getItem("arsipvitey_notes")) || [];
+        let chatMessages = [];
 
         let currentUser = JSON.parse(localStorage.getItem("arsipvitey_session")) || null;
         let currentActiveCategory = "";
@@ -685,8 +917,7 @@
         let selectedCategoryFile = null;
         let selectedManageFile = null;
 
-        // Auto Logout Timer & Variable
-        const AUTO_LOGOUT_TIME_MS = 10 * 60 * 1000; // 10 Menit dalam Milidetik
+        const AUTO_LOGOUT_TIME_MS = 10 * 60 * 1000;
         let awayTimer = null;
 
         window.onload = function () {
@@ -699,9 +930,450 @@
             initDropzones();
             listenRealtimeDatabase();
             cleanupOldLogs();
+            cleanupOldChats();
+            updateCountdowns();
         };
 
-        // ================= FITUR LOGGING REALTIME & AUTO-CLEANUP 6 BULAN =================
+        // ================= HITUNG UMUR & HARI SPESIAL (2004 & 2024) =================
+        function calculateAgeInYears(birthDateStr) {
+            const birthDate = new Date(birthDateStr);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function updateCountdowns() {
+            const annivEl = document.getElementById("countdownAnniv");
+            const theoEl = document.getElementById("countdownTheo");
+            const violaEl = document.getElementById("countdownViola");
+
+            const annivAgeEl = document.getElementById("annivAgeDisplay");
+            const theoAgeEl = document.getElementById("theoAgeDisplay");
+            const violaAgeEl = document.getElementById("violaAgeDisplay");
+
+            // Hitung Umur Riil
+            if (annivAgeEl) annivAgeEl.innerText = `${calculateAgeInYears("2024-11-03")} Tahun`;
+            if (theoAgeEl) theoAgeEl.innerText = `${calculateAgeInYears("2004-09-02")} Tahun`;
+            if (violaAgeEl) violaAgeEl.innerText = `${calculateAgeInYears("2004-08-30")} Tahun`;
+
+            // Hitung Mundur Hari Spesial
+            if (annivEl) annivEl.innerText = getDaysUntilText(11, 3);
+            if (theoEl) theoEl.innerText = getDaysUntilText(9, 2);
+            if (violaEl) violaEl.innerText = getDaysUntilText(8, 30);
+        }
+
+        function getDaysUntilText(month, day) {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            let target = new Date(currentYear, month - 1, day);
+            if (todayStart.getTime() > target.getTime()) {
+                target = new Date(currentYear + 1, month - 1, day);
+            }
+
+            const diffTime = target.getTime() - todayStart.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) {
+                return "Hari Ini! 🎉";
+            } else {
+                return `${diffDays} Hari Lagi`;
+            }
+        }
+
+        // ================= POP-UP PESAN RAHASIA (BARU VS DILIHAT) =================
+        function checkDailySecretNotePopup() {
+            if (!currentUser) return;
+
+            const seenNotesKey = `arsipvitey_seen_notes_${currentUser.id}`;
+            const seenNoteIds = JSON.parse(localStorage.getItem(seenNotesKey)) || [];
+            const myNotes = secretNotes.filter(n => n.receiver === currentUser.name);
+
+            // Cek apakah ada pesan BARU (belum pernah diliat)
+            const hasNewUnseenNote = myNotes.some(n => !seenNoteIds.includes(n.id));
+
+            if (hasNewUnseenNote) {
+                // Jika ada pesan BARU -> Tampilkan langsung hari itu juga!
+                setTimeout(() => {
+                    openNotesModal();
+                }, 600);
+                return;
+            }
+
+            // Jika BUKAN pesan baru (sudah diliat), aturan 1x sehari untuk login pertama
+            const now = new Date();
+            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+            const lastPopupKey = `arsipvitey_note_popup_${currentUser.id}`;
+            const lastPopupDate = localStorage.getItem(lastPopupKey);
+
+            if (lastPopupDate !== todayStr && myNotes.length > 0) {
+                localStorage.setItem(lastPopupKey, todayStr);
+                setTimeout(() => {
+                    openNotesModal();
+                }, 600);
+            }
+        }
+
+        function markMyNotesAsSeen() {
+            if (!currentUser) return;
+            const seenNotesKey = `arsipvitey_seen_notes_${currentUser.id}`;
+            const seenNoteIds = JSON.parse(localStorage.getItem(seenNotesKey)) || [];
+
+            secretNotes.filter(n => n.receiver === currentUser.name).forEach(n => {
+                if (!seenNoteIds.includes(n.id)) {
+                    seenNoteIds.push(n.id);
+                }
+            });
+
+            localStorage.setItem(seenNotesKey, JSON.stringify(seenNoteIds));
+        }
+
+        // ================= FITUR CHAT REALTIME (THEO BLUE & VIOLA PINK) =================
+        function openChatModal() {
+            history.pushState({ modal: "chat" }, "", "");
+            document.getElementById("chatModal").classList.remove("hidden");
+            renderChatMessages();
+            scrollChatToBottom();
+        }
+
+        function closeChatModal() {
+            document.getElementById("chatModal").classList.add("hidden");
+        }
+
+        async function handleSendChatMessage(e) {
+            e.preventDefault();
+            const textInput = document.getElementById("chatInputText");
+            const text = textInput.value.trim();
+
+            if (!text) return;
+
+            const now = new Date();
+            const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+            const newMsg = {
+                id: String(Date.now()),
+                sender: currentUser ? currentUser.name : "Guest",
+                text: text,
+                time: timeFormatted,
+                createdAt: Date.now()
+            };
+
+            if (isFirebaseActive && db) {
+                await db.collection("chats").doc(newMsg.id).set(newMsg);
+            } else {
+                chatMessages.push(newMsg);
+                renderChatMessages();
+            }
+
+            textInput.value = "";
+            scrollChatToBottom();
+        }
+
+        async function cleanupOldChats() {
+            const ONE_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
+            const cutoffTime = Date.now() - ONE_MONTH_MS;
+
+            if (isFirebaseActive && db) {
+                try {
+                    const snapshot = await db.collection("chats").where("createdAt", "<", cutoffTime).get();
+                    if (!snapshot.empty) {
+                        const batch = db.batch();
+                        snapshot.docs.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+                        await batch.commit();
+                    }
+                } catch (e) {
+                    console.error("Gagal pembersihan chat tua:", e);
+                }
+            }
+        }
+
+        function renderChatMessages() {
+            const container = document.getElementById("chatMessagesContainer");
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (chatMessages.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 py-12 text-center italic">Belum ada obrolan. Mulai sapa sekarang!</p>`;
+                return;
+            }
+
+            chatMessages.forEach(msg => {
+                const isMe = currentUser && currentUser.name === msg.sender;
+                const isViola = msg.sender === "Viola";
+                const isTheo = msg.sender === "Theo";
+
+                // WARNA BUBBLE: VIOLA PINK, THEO BIRU
+                let bubbleBg = "bg-slate-100 text-slate-800 border border-slate-200/80";
+                if (isViola) {
+                    bubbleBg = "bg-pink-500 text-white shadow-sm shadow-pink-500/20";
+                } else if (isTheo) {
+                    bubbleBg = "bg-sky-600 text-white shadow-sm shadow-sky-600/20";
+                }
+
+                const bubble = document.createElement("div");
+                bubble.className = `flex flex-col max-w-[78%] ${isMe ? 'self-end items-end' : 'self-start items-start'}`;
+
+                bubble.innerHTML = `
+                    <span class="text-[9px] font-bold text-slate-400 px-1 mb-0.5">${msg.sender}</span>
+                    <div class="p-3 rounded-2xl text-xs leading-relaxed ${bubbleBg} ${isMe ? (isViola ? 'rounded-br-none' : 'rounded-br-none') : (isViola ? 'rounded-bl-none' : 'rounded-bl-none')}">
+                        ${msg.text}
+                    </div>
+                    <span class="text-[9px] text-slate-400 font-mono mt-0.5 px-1">${msg.time}</span>
+                `;
+                container.appendChild(bubble);
+            });
+
+            scrollChatToBottom();
+        }
+
+        function scrollChatToBottom() {
+            const container = document.getElementById("chatMessagesContainer");
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        // ================= FITUR KOCOK KENANGAN =================
+        function shakeRandomMemory() {
+            if (archives.length === 0) {
+                alert("Belum ada album foto tersimpan di portal.");
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * archives.length);
+            const randomItem = archives[randomIndex];
+
+            const container = document.getElementById("randomMemoryContent");
+            container.innerHTML = `
+                <div class="p-5 bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/80 rounded-2xl space-y-3">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 bg-amber-200/70 px-3 py-1 rounded-full inline-block">
+                        ${randomItem.category} • ${randomItem.year}
+                    </span>
+                    <h2 class="text-xl font-extrabold text-slate-900 leading-snug">${randomItem.title}</h2>
+                    <p class="text-xs text-slate-600 flex items-center justify-center gap-1.5">
+                        <i class="fa-regular fa-calendar text-amber-600"></i> ${randomItem.date}
+                    </p>
+                </div>
+
+                <a href="${randomItem.driveUrl}" target="_blank" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-2xl transition flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-brands fa-google-drive text-amber-400"></i>
+                    <span>Buka Folder Google Drive</span>
+                </a>
+            `;
+
+            history.pushState({ modal: "randomMemory" }, "", "");
+            document.getElementById("randomMemoryModal").classList.remove("hidden");
+        }
+
+        function closeRandomMemoryModal() {
+            document.getElementById("randomMemoryModal").classList.add("hidden");
+        }
+
+        // ================= FITUR MOMEN IMPIAN / WISHLIST =================
+        function openWishlistModal() {
+            history.pushState({ modal: "wishlist" }, "", "");
+            document.getElementById("wishlistModal").classList.remove("hidden");
+            renderWishlistContainer();
+        }
+
+        function closeWishlistModal() {
+            document.getElementById("wishlistModal").classList.add("hidden");
+        }
+
+        async function handleAddWishlist(e) {
+            e.preventDefault();
+            const titleInput = document.getElementById("wishlistTitle");
+            const title = titleInput.value.trim();
+
+            if (!title) return;
+
+            const newItem = {
+                id: String(Date.now()),
+                title: title,
+                creator: currentUser ? currentUser.name : "System",
+                isCompleted: false,
+                createdAt: Date.now()
+            };
+
+            if (isFirebaseActive && db) {
+                await db.collection("wishlists").doc(newItem.id).set(newItem);
+            } else {
+                wishlists.unshift(newItem);
+                localStorage.setItem("arsipvitey_wishlists", JSON.stringify(wishlists));
+                renderWishlistContainer();
+            }
+
+            await createLog("add_wishlist", `Menambahkan wishlist impian baru: "${title}"`);
+            titleInput.value = "";
+        }
+
+        async function toggleWishlistComplete(id) {
+            const item = wishlists.find(w => String(w.id) === String(id));
+            if (!item) return;
+
+            const newStatus = !item.isCompleted;
+
+            if (isFirebaseActive && db) {
+                await db.collection("wishlists").doc(String(id)).update({ isCompleted: newStatus });
+            } else {
+                item.isCompleted = newStatus;
+                localStorage.setItem("arsipvitey_wishlists", JSON.stringify(wishlists));
+                renderWishlistContainer();
+            }
+
+            if (newStatus) {
+                await createLog("complete_wishlist", `Mewujudkan wishlist impian: "${item.title}" 🎉`);
+            }
+        }
+
+        async function deleteWishlistItem(id) {
+            const item = wishlists.find(w => String(w.id) === String(id));
+            if (!item) return;
+
+            if (confirm(`Hapus item wishlist "${item.title}"?`)) {
+                if (isFirebaseActive && db) {
+                    await db.collection("wishlists").doc(String(id)).delete();
+                } else {
+                    wishlists = wishlists.filter(w => String(w.id) !== String(id));
+                    localStorage.setItem("arsipvitey_wishlists", JSON.stringify(wishlists));
+                    renderWishlistContainer();
+                }
+            }
+        }
+
+        function renderWishlistContainer() {
+            const container = document.getElementById("wishlistContainer");
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (wishlists.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center italic">Belum ada momen impian ditambahkan.</p>`;
+                return;
+            }
+
+            wishlists.forEach(w => {
+                const item = document.createElement("div");
+                item.className = `p-3 rounded-2xl border flex items-center justify-between gap-3 text-xs transition duration-200 ${w.isCompleted ? 'bg-emerald-50/60 border-emerald-200 text-slate-500' : 'bg-slate-50 border-slate-200/80 text-slate-800'
+                    }`;
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-2.5 flex-1 min-w-0">
+                        <button onclick="toggleWishlistComplete('${w.id}')" class="p-1 text-base transition ${w.isCompleted ? 'text-emerald-600' : 'text-slate-300 hover:text-emerald-500'}">
+                            <i class="fa-${w.isCompleted ? 'solid fa-circle-check' : 'regular fa-circle'}"></i>
+                        </button>
+                        <span class="font-bold truncate ${w.isCompleted ? 'line-through text-slate-400' : ''}">${w.title}</span>
+                    </div>
+                    <button onclick="deleteWishlistItem('${w.id}')" class="p-1.5 text-slate-300 hover:text-rose-600 transition">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // ================= FITUR PESAN RAHASIA =================
+        function openNotesModal() {
+            history.pushState({ modal: "notes" }, "", "");
+            document.getElementById("notesModal").classList.remove("hidden");
+            renderNotesContainer();
+            markMyNotesAsSeen();
+        }
+
+        function closeNotesModal() {
+            document.getElementById("notesModal").classList.add("hidden");
+        }
+
+        async function handleAddSecretNote(e) {
+            e.preventDefault();
+            const receiver = document.getElementById("noteReceiver").value;
+            const contentInput = document.getElementById("noteContent");
+            const content = contentInput.value.trim();
+
+            if (!content) return;
+
+            const now = new Date();
+            const dateFormatted = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+            const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+            const newNote = {
+                id: String(Date.now()),
+                sender: currentUser ? currentUser.name : "System",
+                receiver: receiver,
+                content: content,
+                timestamp: `${dateFormatted}, ${timeFormatted} WIB`,
+                createdAt: Date.now()
+            };
+
+            if (isFirebaseActive && db) {
+                await db.collection("secret_notes").doc(newNote.id).set(newNote);
+            } else {
+                secretNotes.unshift(newNote);
+                localStorage.setItem("arsipvitey_notes", JSON.stringify(secretNotes));
+                renderNotesContainer();
+            }
+
+            await createLog("send_note", `${currentUser ? currentUser.name : "System"} mengirim pesan rahasia untuk ${receiver}`);
+            contentInput.value = "";
+            alert(`Pesan rahasia untuk ${receiver} berhasil terkirim! 💌`);
+        }
+
+        async function deleteSecretNote(id) {
+            if (confirm("Hapus pesan rahasia ini?")) {
+                if (isFirebaseActive && db) {
+                    await db.collection("secret_notes").doc(String(id)).delete();
+                } else {
+                    secretNotes = secretNotes.filter(n => String(n.id) !== String(id));
+                    localStorage.setItem("arsipvitey_notes", JSON.stringify(secretNotes));
+                    renderNotesContainer();
+                }
+            }
+        }
+
+        function renderNotesContainer() {
+            const container = document.getElementById("notesContainer");
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (secretNotes.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center italic">Belum ada pesan rahasia terkirim.</p>`;
+                return;
+            }
+
+            secretNotes.forEach(n => {
+                const item = document.createElement("div");
+                const isForMe = currentUser && currentUser.name === n.receiver;
+
+                item.className = `p-4 rounded-2xl border space-y-2 text-xs transition duration-200 ${isForMe ? 'bg-pink-50/80 border-pink-200' : 'bg-slate-50 border-slate-200/80'
+                    }`;
+
+                item.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-pink-100 pb-2">
+                        <div class="flex items-center gap-1.5 font-extrabold text-slate-800">
+                            <span>Dari ${n.sender}</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] text-pink-500"></i>
+                            <span class="text-pink-600">Untuk ${n.receiver}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] text-slate-400 font-mono">${n.timestamp}</span>
+                            <button onclick="deleteSecretNote('${n.id}')" class="text-slate-300 hover:text-rose-500 transition">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed font-medium pt-0.5">${n.content}</p>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // ================= FITUR LOGGING REALTIME =================
         async function createLog(actionType, details) {
             const now = new Date();
             const dateFormatted = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -780,12 +1452,15 @@
                 if (log.action === "login") {
                     badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
                     icon = "fa-right-to-bracket";
-                } else if (log.action.startsWith("add") || log.action.startsWith("edit")) {
+                } else if (log.action.startsWith("add") || log.action.startsWith("edit") || log.action.startsWith("complete")) {
                     badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
                     icon = log.action.startsWith("edit") ? "fa-pen-to-square" : "fa-plus";
                 } else if (log.action.startsWith("delete")) {
                     badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
                     icon = "fa-trash-can";
+                } else if (log.action.startsWith("send")) {
+                    badgeColor = "bg-pink-50 text-pink-700 border-pink-200";
+                    icon = "fa-envelope";
                 }
 
                 const item = document.createElement("div");
@@ -1000,6 +1675,30 @@
         // ================= FITUR NAVIGASI TOMBOL BACK HP (<) =================
         function initMobileHistorySystem() {
             window.addEventListener('popstate', function (event) {
+                const chatModal = document.getElementById("chatModal");
+                if (!chatModal.classList.contains("hidden")) {
+                    chatModal.classList.add("hidden");
+                    return;
+                }
+
+                const randomMemoryModal = document.getElementById("randomMemoryModal");
+                if (!randomMemoryModal.classList.contains("hidden")) {
+                    randomMemoryModal.classList.add("hidden");
+                    return;
+                }
+
+                const wishlistModal = document.getElementById("wishlistModal");
+                if (!wishlistModal.classList.contains("hidden")) {
+                    wishlistModal.classList.add("hidden");
+                    return;
+                }
+
+                const notesModal = document.getElementById("notesModal");
+                if (!notesModal.classList.contains("hidden")) {
+                    notesModal.classList.add("hidden");
+                    return;
+                }
+
                 const manageModal = document.getElementById("manageModal");
                 if (!manageModal.classList.contains("hidden")) {
                     manageModal.classList.add("hidden");
@@ -1116,6 +1815,28 @@
                     renderLogList();
                 }
             });
+
+            db.collection("wishlists").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    wishlists = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderWishlistContainer();
+                }
+            });
+
+            db.collection("secret_notes").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    secretNotes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderNotesContainer();
+                    checkDailySecretNotePopup();
+                }
+            });
+
+            db.collection("chats").orderBy("createdAt", "asc").onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    chatMessages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderChatMessages();
+                }
+            });
         }
 
         async function handleLogin(e) {
@@ -1152,11 +1873,15 @@
             document.getElementById("adminModal").classList.add("hidden");
             document.getElementById("logModal").classList.add("hidden");
             document.getElementById("manageModal").classList.add("hidden");
+            document.getElementById("randomMemoryModal").classList.add("hidden");
+            document.getElementById("wishlistModal").classList.add("hidden");
+            document.getElementById("notesModal").classList.add("hidden");
+            document.getElementById("chatModal").classList.add("hidden");
             document.getElementById("globalNavbar").classList.add("hidden");
             document.getElementById("loginPage").classList.remove("hidden");
 
             if (isAuto) {
-                alert("🔒 Sesi Anda telah berakhir secara otomatis karena meninggalkan web selama lebih dari 10 menit.");
+                alert("Harap login ulang");
             }
         }
 
@@ -1179,6 +1904,8 @@
             renderBanners();
             renderCategoryCards();
             updateCategoryCounts();
+            updateCountdowns();
+            checkDailySecretNotePopup();
         }
 
         function renderCategoryDropdowns() {
@@ -1238,14 +1965,23 @@
 
         function renderCategoryCards() {
             const grid = document.getElementById("categoryGrid");
+            const searchInput = document.getElementById("quickSearchInput");
+            const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
             grid.innerHTML = "";
 
-            if (categories.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 py-6 text-center italic">Belum ada kartu kategori. Tambahkan melalui Panel Tambahkan.</p>`;
+            const filteredCategories = categories.filter(cat => {
+                const nameMatch = cat.name.toLowerCase().includes(searchVal);
+                const tagMatch = cat.tag ? cat.tag.toLowerCase().includes(searchVal) : false;
+                return nameMatch || tagMatch;
+            });
+
+            if (filteredCategories.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-slate-400 py-6 text-center italic">Kategori tidak ditemukan.</p>`;
                 return;
             }
 
-            categories.forEach(cat => {
+            filteredCategories.forEach(cat => {
                 const border = cat.border || "border-indigo-100 hover:border-indigo-400";
                 const badgeBg = cat.badgeBg || "bg-indigo-600";
                 const icon = cat.icon || "fa-folder";
