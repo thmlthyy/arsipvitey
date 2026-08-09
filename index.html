@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>arsipvitey — Portal Arsip Kenangan</title>
+    <title>arsipvitey Portal Arsip Kenangan</title>
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -285,6 +285,105 @@
             <div id="categoryAlbumsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             </div>
         </main>
+    </div>
+
+    <!-- ================= MODAL MANAGE (EDIT & HAPUS) ================= -->
+    <div id="manageModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 space-y-5 relative border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
+
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100">
+                        <i class="fa-solid fa-pen-to-square text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 id="manageModalTitle" class="font-bold text-base text-slate-900">Kelola Data</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Ubah nama, tanggal, foto, atau hapus item</p>
+                    </div>
+                </div>
+                <button onclick="closeManageModal()" class="p-2 text-slate-400 hover:text-slate-700 rounded-xl"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form onsubmit="handleSaveManagedItem(event)" class="space-y-4">
+                <input type="hidden" id="manageType">
+                <input type="hidden" id="manageId">
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Nama Tempat / Judul</label>
+                    <input type="text" id="manageTitle" required
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div id="manageTagContainer" class="hidden">
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tag / Label
+                        Kategori</label>
+                    <input type="text" id="manageTag"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <!-- DRAG & DROP GANTI FOTO SAMPUL KARTU PORTAL -->
+                <div id="manageImageContainer" class="hidden">
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Ganti Foto Sampul / Latar
+                        Kartu</label>
+                    <div id="manageDropzone"
+                        class="border-2 border-dashed border-indigo-300 bg-slate-50 hover:bg-indigo-50/50 p-3.5 rounded-2xl text-center cursor-pointer transition duration-200 relative">
+                        <input type="file" id="manageFileInput" accept="image/*" class="hidden"
+                            onchange="handleFileSelect(event, 'manage')">
+
+                        <div id="manageDropzoneContent" class="space-y-1">
+                            <i class="fa-solid fa-cloud-arrow-up text-xl text-indigo-500"></i>
+                            <p class="text-xs font-bold text-slate-700">Tarik & Lepas Foto Baru di Sini</p>
+                            <p class="text-[10px] text-slate-400">atau klik untuk memilih foto pengganti</p>
+                        </div>
+
+                        <div id="managePreviewContainer" class="hidden relative mt-1">
+                            <img id="managePreviewImg"
+                                class="h-28 w-full object-cover rounded-xl border border-slate-200 shadow-sm"
+                                alt="Preview">
+                            <button type="button" onclick="removeManageImagePreview()"
+                                class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] p-1.5 rounded-full hover:bg-rose-600 transition shadow">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="manageCategoryContainer" class="hidden">
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Kategori Utama</label>
+                    <select id="manageCategory"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none dynamic-category-options">
+                    </select>
+                </div>
+
+                <div id="manageDateContainer" class="hidden">
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tanggal</label>
+                    <input type="date" id="manageDate"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 focus:outline-none">
+                </div>
+
+                <div id="manageDriveUrlContainer" class="hidden">
+                    <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Link Google Drive
+                        Folder</label>
+                    <input type="url" id="manageDriveUrl"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="flex items-center justify-between gap-3 pt-2">
+                    <button type="button" onclick="handleDeleteManagedItem()"
+                        class="py-2.5 px-4 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 font-semibold text-xs rounded-xl transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> Hapus
+                    </button>
+                    <button type="submit" id="manageSubmitBtn"
+                        class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition shadow-sm">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+
+        </div>
     </div>
 
     <!-- ================= MODAL EVENT LOG ================= -->
@@ -584,6 +683,7 @@
         let currentActiveCategory = "";
         let selectedBannerFile = null;
         let selectedCategoryFile = null;
+        let selectedManageFile = null;
 
         // Auto Logout Timer & Variable
         const AUTO_LOGOUT_TIME_MS = 10 * 60 * 1000; // 10 Menit dalam Milidetik
@@ -598,7 +698,7 @@
             }
             initDropzones();
             listenRealtimeDatabase();
-            cleanupOldLogs(); // Pembersihan otomatis log tua (> 6 Bulan)
+            cleanupOldLogs();
         };
 
         // ================= FITUR LOGGING REALTIME & AUTO-CLEANUP 6 BULAN =================
@@ -630,9 +730,8 @@
             }
         }
 
-        // PEMBERSIHAN OTOMATIS LOG LEBIH DARI 6 BULAN (180 HARI)
         async function cleanupOldLogs() {
-            const SIX_MONTHS_MS = 180 * 24 * 60 * 60 * 1000; // 180 Hari dalam ms
+            const SIX_MONTHS_MS = 180 * 24 * 60 * 60 * 1000;
             const cutoffTime = Date.now() - SIX_MONTHS_MS;
 
             if (isFirebaseActive && db) {
@@ -644,7 +743,6 @@
                             batch.delete(doc.ref);
                         });
                         await batch.commit();
-                        console.log(`🧹 ${snapshot.size} log aktivitas lama (>6 bulan) berhasil dibersihkan otomatis.`);
                     }
                 } catch (e) {
                     console.error("Gagal pembersihan log tua:", e);
@@ -682,9 +780,9 @@
                 if (log.action === "login") {
                     badgeColor = "bg-blue-50 text-blue-700 border-blue-200";
                     icon = "fa-right-to-bracket";
-                } else if (log.action.startsWith("add")) {
+                } else if (log.action.startsWith("add") || log.action.startsWith("edit")) {
                     badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
-                    icon = "fa-plus";
+                    icon = log.action.startsWith("edit") ? "fa-pen-to-square" : "fa-plus";
                 } else if (log.action.startsWith("delete")) {
                     badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
                     icon = "fa-trash-can";
@@ -708,24 +806,218 @@
             });
         }
 
+        // ================= FITUR EDIT & KELOLA INTERAKTIF (TITIK 3) =================
+        function openManageModal(event, type, id) {
+            if (event) event.stopPropagation();
+
+            selectedManageFile = null;
+            document.getElementById("manageFileInput").value = "";
+
+            document.getElementById("manageType").value = type;
+            document.getElementById("manageId").value = id;
+
+            const driveField = document.getElementById("manageDriveUrlContainer");
+            const dateField = document.getElementById("manageDateContainer");
+            const tagField = document.getElementById("manageTagContainer");
+            const catField = document.getElementById("manageCategoryContainer");
+            const imageField = document.getElementById("manageImageContainer");
+            const modalTitle = document.getElementById("manageModalTitle");
+
+            if (type === 'album') {
+                const item = archives.find(a => String(a.id) === String(id));
+                if (!item) return;
+                modalTitle.innerText = "Kelola Album Foto";
+                document.getElementById("manageTitle").value = item.title;
+                document.getElementById("manageDate").value = item.date;
+                document.getElementById("manageDriveUrl").value = item.driveUrl;
+                document.getElementById("manageCategory").value = item.category;
+
+                driveField.classList.remove("hidden");
+                dateField.classList.remove("hidden");
+                catField.classList.remove("hidden");
+                tagField.classList.add("hidden");
+                imageField.classList.add("hidden");
+            } else if (type === 'category') {
+                const item = categories.find(c => String(c.id) === String(id));
+                if (!item) return;
+                modalTitle.innerText = "Kelola Kartu Kategori Portal";
+                document.getElementById("manageTitle").value = item.name;
+                document.getElementById("manageTag").value = item.tag;
+
+                if (item.coverUrl) {
+                    document.getElementById('managePreviewImg').src = item.coverUrl;
+                    document.getElementById('manageDropzoneContent').classList.add('hidden');
+                    document.getElementById('managePreviewContainer').classList.remove('hidden');
+                } else {
+                    removeManageImagePreview();
+                }
+
+                driveField.classList.add("hidden");
+                dateField.classList.add("hidden");
+                catField.classList.add("hidden");
+                tagField.classList.remove("hidden");
+                imageField.classList.remove("hidden");
+            } else if (type === 'banner') {
+                const item = banners.find(b => String(b.id) === String(id));
+                if (!item) return;
+                modalTitle.innerText = "Kelola Sorotan Momen";
+                document.getElementById("manageTitle").value = item.title;
+                document.getElementById("manageCategory").value = item.category;
+
+                driveField.classList.add("hidden");
+                dateField.classList.add("hidden");
+                catField.classList.remove("hidden");
+                tagField.classList.add("hidden");
+                imageField.classList.add("hidden");
+            }
+
+            history.pushState({ modal: "manage" }, "", "");
+            document.getElementById("manageModal").classList.remove("hidden");
+        }
+
+        function closeManageModal() {
+            document.getElementById("manageModal").classList.add("hidden");
+        }
+
+        function removeManageImagePreview() {
+            selectedManageFile = null;
+            document.getElementById('manageFileInput').value = '';
+            document.getElementById('managePreviewImg').src = '';
+            document.getElementById('manageDropzoneContent').classList.remove('hidden');
+            document.getElementById('managePreviewContainer').classList.add('hidden');
+        }
+
+        async function handleSaveManagedItem(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById("manageSubmitBtn");
+            const originalBtnText = submitBtn.innerText;
+
+            const type = document.getElementById("manageType").value;
+            const id = document.getElementById("manageId").value;
+            const newTitle = document.getElementById("manageTitle").value.trim();
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Menyimpan...";
+
+                if (type === 'album') {
+                    const newDate = document.getElementById("manageDate").value;
+                    const newYear = new Date(newDate).getFullYear().toString();
+                    const newDriveUrl = document.getElementById("manageDriveUrl").value.trim();
+                    const newCategory = document.getElementById("manageCategory").value;
+
+                    const updateObj = { title: newTitle, date: newDate, year: newYear, driveUrl: newDriveUrl, category: newCategory };
+
+                    if (isFirebaseActive && db) {
+                        await db.collection("archives").doc(String(id)).update(updateObj);
+                    } else {
+                        const idx = archives.findIndex(a => String(a.id) === String(id));
+                        if (idx !== -1) archives[idx] = { ...archives[idx], ...updateObj };
+                        localStorage.setItem("arsipvitey_data", JSON.stringify(archives));
+                    }
+
+                    await createLog("edit_album", `Mengubah data album foto menjadi "${newTitle}" (${newCategory})`);
+                    if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                        renderCategoryAlbums();
+                    }
+                } else if (type === 'category') {
+                    const newTag = document.getElementById("manageTag").value.trim();
+                    let newCoverUrl = document.getElementById('managePreviewImg').src;
+
+                    if (selectedManageFile) {
+                        newCoverUrl = await compressAndConvertToBase64(selectedManageFile, 800, 0.75);
+                    }
+
+                    const updateObj = { name: newTitle, tag: newTag, coverUrl: newCoverUrl };
+
+                    if (isFirebaseActive && db) {
+                        await db.collection("categories").doc(String(id)).update(updateObj);
+                    } else {
+                        const idx = categories.findIndex(c => String(c.id) === String(id));
+                        if (idx !== -1) categories[idx] = { ...categories[idx], ...updateObj };
+                        localStorage.setItem("arsipvitey_categories_v2", JSON.stringify(categories));
+                        renderCategoryCards();
+                    }
+
+                    await createLog("edit_category", `Mengubah kartu kategori portal "${newTitle}" (${newTag})`);
+                } else if (type === 'banner') {
+                    const newCategory = document.getElementById("manageCategory").value;
+                    const updateObj = { title: newTitle, category: newCategory };
+
+                    if (isFirebaseActive && db) {
+                        await db.collection("banners").doc(String(id)).update(updateObj);
+                    } else {
+                        const idx = banners.findIndex(b => String(b.id) === String(id));
+                        if (idx !== -1) banners[idx] = { ...banners[idx], ...updateObj };
+                        localStorage.setItem("arsipvitey_banners", JSON.stringify(banners));
+                        renderBanners();
+                    }
+
+                    await createLog("edit_banner", `Mengubah sorotan momen menjadi "${newTitle}" (${newCategory})`);
+                }
+
+                closeManageModal();
+                alert("Perubahan data berhasil disimpan!");
+            } catch (err) {
+                alert("Terjadi kesalahan: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        }
+
+        async function handleDeleteManagedItem() {
+            const type = document.getElementById("manageType").value;
+            const id = document.getElementById("manageId").value;
+
+            if (type === 'album') {
+                const target = archives.find(a => String(a.id) === String(id));
+                const itemTitle = target ? target.title : "Album";
+
+                if (confirm(`Apakah Anda yakin ingin menghapus album foto "${itemTitle}"?`)) {
+                    if (isFirebaseActive && db) {
+                        await db.collection("archives").doc(String(id)).delete();
+                    } else {
+                        archives = archives.filter(a => String(a.id) !== String(id));
+                        localStorage.setItem("arsipvitey_data", JSON.stringify(archives));
+                    }
+
+                    await createLog("delete_album", `Menghapus album foto "${itemTitle}"`);
+                    closeManageModal();
+                    if (!document.getElementById("categoryDetailPage").classList.contains("hidden")) {
+                        renderCategoryAlbums();
+                    }
+                }
+            } else if (type === 'category') {
+                await deleteCategory(id);
+                closeManageModal();
+            } else if (type === 'banner') {
+                await deleteBanner(id);
+                closeManageModal();
+            }
+        }
+
         // ================= FITUR NAVIGASI TOMBOL BACK HP (<) =================
         function initMobileHistorySystem() {
             window.addEventListener('popstate', function (event) {
-                // 1. Jika Modal Log terbuka -> Tutup Modal
+                const manageModal = document.getElementById("manageModal");
+                if (!manageModal.classList.contains("hidden")) {
+                    manageModal.classList.add("hidden");
+                    return;
+                }
+
                 const logModal = document.getElementById("logModal");
                 if (!logModal.classList.contains("hidden")) {
                     logModal.classList.add("hidden");
                     return;
                 }
 
-                // 2. Jika Modal Panel Tambahkan terbuka -> Tutup Modal
                 const adminModal = document.getElementById("adminModal");
                 if (!adminModal.classList.contains("hidden")) {
                     adminModal.classList.add("hidden");
                     return;
                 }
 
-                // 3. Navigasi Halaman
                 const state = event.state;
                 if (state && state.page === "categoryDetail" && state.category) {
                     renderCategoryDetailPage(state.category);
@@ -818,7 +1110,6 @@
                 }
             });
 
-            // Synchronizer Log Aktivitas
             db.collection("logs").orderBy("createdAt", "desc").onSnapshot(snapshot => {
                 if (!snapshot.empty) {
                     logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -844,7 +1135,6 @@
                 errorEl.classList.add("hidden");
                 showDashboard(true);
 
-                // LOG LOGIN
                 await createLog("login", `${currentUser.name} berhasil login ke portal`);
             } else {
                 errorEl.classList.remove("hidden");
@@ -861,6 +1151,7 @@
             document.getElementById("categoryDetailPage").classList.add("hidden");
             document.getElementById("adminModal").classList.add("hidden");
             document.getElementById("logModal").classList.add("hidden");
+            document.getElementById("manageModal").classList.add("hidden");
             document.getElementById("globalNavbar").classList.add("hidden");
             document.getElementById("loginPage").classList.remove("hidden");
 
@@ -926,6 +1217,12 @@
                          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out" 
                          alt="${item.title}"
                          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                    
+                    <button onclick="openManageModal(event, 'banner', '${item.id}')" 
+                            class="absolute top-3.5 right-3.5 z-20 w-8 h-8 bg-slate-900/60 hover:bg-slate-900/90 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition shadow">
+                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                    </button>
+
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
                     <div class="relative z-10 space-y-1">
                         <span class="text-[10px] font-bold ${badgeColor} text-white px-2.5 py-0.5 rounded-full shadow-sm">${item.category}</span>
@@ -962,6 +1259,12 @@
                         class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out"
                         alt="${cat.name}"
                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=800&q=80';">
+                    
+                    <button onclick="openManageModal(event, 'category', '${cat.id}')" 
+                            class="absolute top-4 right-4 z-20 w-8 h-8 bg-slate-900/60 hover:bg-slate-900/90 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition shadow">
+                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                    </button>
+
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
                     <div class="absolute top-4 left-4">
                         <span class="text-[10px] font-bold uppercase tracking-wider ${badgeBg} text-white px-3 py-1 rounded-full shadow-md">
@@ -1051,7 +1354,12 @@
                       <span class="text-[10px] font-bold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
                         <i class="fa-regular fa-calendar mr-1.5"></i>${item.date}
                       </span>
-                      <span class="text-xs font-mono font-bold text-slate-400">Tahun ${item.year}</span>
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono font-bold text-slate-400">Tahun ${item.year}</span>
+                        <button onclick="openManageModal(event, 'album', '${item.id}')" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition">
+                            <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                        </button>
+                      </div>
                     </div>
                     <h3 class="font-extrabold text-lg text-slate-900 leading-snug">${item.title}</h3>
                   </div>
@@ -1110,6 +1418,7 @@
         function initDropzones() {
             setupDropzone('bannerDropzone', 'bannerFileInput', 'banner');
             setupDropzone('categoryDropzone', 'categoryFileInput', 'category');
+            setupDropzone('manageDropzone', 'manageFileInput', 'manage');
         }
 
         function setupDropzone(dropzoneId, fileInputId, type) {
@@ -1196,6 +1505,7 @@
 
             if (type === 'banner') selectedBannerFile = file;
             if (type === 'category') selectedCategoryFile = file;
+            if (type === 'manage') selectedManageFile = file;
 
             const reader = new FileReader();
             reader.onload = function (e) {
@@ -1208,6 +1518,10 @@
                     document.getElementById('categoryPreviewImg').src = previewUrl;
                     document.getElementById('categoryDropzoneContent').classList.add('hidden');
                     document.getElementById('categoryPreviewContainer').classList.remove('hidden');
+                } else if (type === 'manage') {
+                    document.getElementById('managePreviewImg').src = previewUrl;
+                    document.getElementById('manageDropzoneContent').classList.add('hidden');
+                    document.getElementById('managePreviewContainer').classList.remove('hidden');
                 }
             };
             reader.readAsDataURL(file);
@@ -1248,7 +1562,6 @@
                 }
             }
 
-            // LOG PENAMBAHAN ALBUM DRIVE
             await createLog("add_drive", `Menambahkan album Drive "${title}" pada kategori (${category})`);
 
             toggleAdminModal();
@@ -1298,7 +1611,6 @@
                     renderBanners();
                 }
 
-                // LOG PENAMBAHAN BANNER
                 await createLog("add_banner", `Menambahkan sorotan momen "${title}" (${category})`);
 
                 document.getElementById("bannerTitle").value = "";
@@ -1350,7 +1662,6 @@
                     renderBanners();
                 }
 
-                // LOG PENGHAPUSAN BANNER
                 await createLog("delete_banner", `Menghapus sorotan momen "${bannerTitle}"`);
             }
         }
@@ -1399,7 +1710,6 @@
                     updateCategoryCounts();
                 }
 
-                // LOG PENAMBAHAN KATEGORI
                 await createLog("add_category", `Menambahkan kartu kategori portal "${name}" (${tag})`);
 
                 document.getElementById("newCatName").value = "";
@@ -1454,7 +1764,6 @@
                     updateCategoryCounts();
                 }
 
-                // LOG PENGHAPUSAN KATEGORI
                 await createLog("delete_category", `Menghapus kartu kategori portal "${catName}"`);
             }
         }
